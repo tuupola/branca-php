@@ -30,10 +30,10 @@ class Branca
         $this->key = $key;
     }
 
-    public function encode($payload, $timestamp = true)
+    public function encode($payload, $timestamp = null)
     {
         /* Microsecond timestamp, boolean false will become 0. */
-        if (true === $timestamp) {
+        if (null === $timestamp) {
             $timestamp = vsprintf("%d%06d", gettimeofday());
         } else {
             $timestamp = (integer) $timestamp;

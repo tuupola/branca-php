@@ -10,8 +10,7 @@ Branca allows you to generate and verify encrypted authentication tokens. Branca
 
 1. Instead of AES 128 CBC and SHA256 HMAC used by Fernet, Branca uses [ChaCha20-Poly1305](https://download.libsodium.org/doc/secret-key_cryptography/chacha20-poly1305.html) Authenticated Encryption with Additional Data (AEAD).
 2. Instead of of Base64URL encoding branca uses Base62 encoding for the token.
-3. You can opt-out from including the timestamp in the token header. When opting out the timestamp will have value of 0.
-4. Timestamps are stored as microseconds instead of seconds to avoid [race conditions](https://www.lbragstad.com/blog/the-future-of-fernet-tokens) in M2M environments.
+3. Timestamps are stored as microseconds instead of seconds to avoid [race conditions](https://www.lbragstad.com/blog/the-future-of-fernet-tokens) in M2M environments.
 
 ## Install
 

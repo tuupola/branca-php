@@ -23,16 +23,34 @@ $ composer require tuupola/branca
 
 ## Usage
 
+Token payload can be any arbitrary data. In below example payload is simple email address. Payload is always tamper proof.
+
 ```php
 use Branca\Branca;
 
-$key = "supersecretkeyyoushouldnotcommit";
-$branca = new Branca($key);
+$branca = new Branca("supersecretkeyyoushouldnotcommit");
+$payload = "tuupola@appelsiini.net";
+$token = $branca->encode($payload);
+/* k6ZeAoUNhKljdHYPaIQ7SrjSVebrajjD2ZkymZlbAc5IJl2gypuh41OHZOMZ3P1vwtEEWiSsqU1tP8 */
 
-$token = $branca->encode("Hello world!");
-/* 7cyhQwUKkzIvMdgWs46ax5Ey6E9VGEBOqJ2oaFI3J56LosEOvDvkTSvksnQaiIwqU */
+$decoded = $branca->decode($token); /* tuupola@appelsiini.net */
+```
 
-$decoded = $branca->decode($token); /* Hello world! */
+Sometimes you might prefer JSON.
+
+```php
+use Branca\Branca;
+
+$branca = new Branca("supersecretkeyyoushouldnotcommit");
+
+$payload = json_encode(["scope" => ["read", "write", "delete"]]);
+$token = $branca->encode($payload);
+
+/*
+56NztEBTV3hVj47wEjinRKAWP8tiwyns2bm4e9931xPEo1tIp4VXOvSM1IirLPfMUcYRFWAosDrK7s038MdH7QbdClQcvqi4
+*/
+
+$decoded = $branca->decode($token); /* {"scope":["read","write","delete"]} */
 ```
 
 ## Testing

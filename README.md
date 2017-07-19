@@ -6,11 +6,12 @@
 
 ### What?
 
-Branca allows you to generate and verify encrypted authentication tokens. Branca is based on [Fernet](https://github.com/fernet/spec/blob/master/Spec.md) with three main differences.
+Branca allows you to generate and verify encrypted authentication tokens. Branca is based on [Fernet](https://github.com/fernet/spec/blob/master/Spec.md) with the following differences.
 
 1. Instead of AES 128 CBC and SHA256 HMAC used by Fernet, Branca uses [ChaCha20-Poly1305](https://download.libsodium.org/doc/secret-key_cryptography/chacha20-poly1305.html) Authenticated Encryption with Additional Data (AEAD).
 2. Instead of of Base64URL encoding branca uses Base62 encoding for the token.
-3. Branca does not include the timestamp in the token header by default.
+3. You can opt-out from including the timestamp in the token header. When opting out the timestamp will have value of 0.
+4. Timestamps are stored as microseconds instead of seconds to avoid [race conditions](https://www.lbragstad.com/blog/the-future-of-fernet-tokens) in M2M environments.
 
 ## Install
 
@@ -19,7 +20,6 @@ Install the library using [Composer](https://getcomposer.org/). Heavy lifting is
 ``` bash
 $ composer require tuupola/branca
 ```
-
 
 ## Usage
 
@@ -50,7 +50,54 @@ $token = $branca->encode($payload);
 56NztEBTV3hVj47wEjinRKAWP8tiwyns2bm4e9931xPEo1tIp4VXOvSM1IirLPfMUcYRFWAosDrK7s038MdH7QbdClQcvqi4
 */
 
-$decoded = $branca->decode($token); /* {"scope":["read","write","delete"]} */
+$decoded = $branca->decode($token);
+$array = json_decode($decoded, true);
+
+/*
+Array
+(
+    [scope] => Array
+        (
+            [0] => read
+            [1] => write
+            [2] => delete
+        )
+
+)
+*/
+```
+
+You can keep the token size small by using a space efficient serialization method such as [MessagePack](http://msgpack.org/) or [Protocol Buffers](https://developers.google.com/protocol-buffers/).
+
+```php
+use Branca\Branca;
+use MessagePack\Packer;
+use MessagePack\Unpacker;
+
+$branca = new Branca("supersecretkeyyoushouldnotcommit");
+$payload = (new Packer)->pack(["scope" => ["read", "write", "delete"]]);
+$token = $branca->encode($payload);
+
+/*
+3U9QO31MBzZwQ8gF63O1d5bvIvdSzJx9qtNFq8UXV8Jt52u1tDvSSgG6xIeNVolkMuhrpsuHlf2pSMYMHX5W
+*/
+
+$decoded = $branca->decode($token);
+$unpacked = (new Unpacker)->unpack($decoded);
+print_r($unpacked);
+
+/*
+Array
+(
+    [scope] => Array
+        (
+            [0] => read
+            [1] => write
+            [2] => delete
+        )
+
+)
+*/
 ```
 
 ## Testing

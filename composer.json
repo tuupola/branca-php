@@ -1,6 +1,6 @@
 {
     "name": "tuupola/branca",
-    "description": "Updated version of Fernet, alternative to JWT.",
+    "description": "Authenticated Encrypted API Tokens with Associated Data",
     "keywords": [
         "jwt",
         "fernet",

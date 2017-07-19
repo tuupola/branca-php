@@ -65,10 +65,7 @@ class Branca
             );
         } catch (\Throwable $error) {
             throw new \RuntimeException("Invalid token.");
-        }
-
-        /* Check for tampered token. */
-        if (!is_string($payload)) {
+        } catch (\Exception $error) {
             throw new \RuntimeException("Invalid token.");
         }
 

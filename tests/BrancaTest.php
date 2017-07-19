@@ -15,6 +15,7 @@
 
 namespace Branca;
 
+use Tuupola\Base62;
 use PHPUnit\Framework\TestCase;
 
 class BrancaTest extends TestCase
@@ -34,6 +35,26 @@ class BrancaTest extends TestCase
         $this->assertEquals("Hello world!", $decoded);
     }
 
+    public function testShouldEncodeWithTimestamp()
+    {
+        $key = "supersecretkeyyoushouldnotcommit";
+        $branca = new Branca($key);
+        $token = $branca->encode("Hello world!", 123206400000000);
+        $binary = (new Base62)->decode($token);
+        $parts = unpack("Cversion/Jtime", $binary);
+        $this->assertEquals(123206400000000, $parts["time"]);
+    }
+
+    public function testShouldEncodeWithZeroTimestamp()
+    {
+        $key = "supersecretkeyyoushouldnotcommit";
+        $branca = new Branca($key);
+        $token = $branca->encode("Hello world!", false);
+        $binary = (new Base62)->decode($token);
+        $parts = unpack("Cversion/Jtime", $binary);
+        $this->assertEquals(0, $parts["time"]);
+    }
+
     public function testShouldThrowInvalidToken()
     {
         $this->expectException(\RuntimeException::class);
@@ -50,6 +71,6 @@ class BrancaTest extends TestCase
         $branca = new Branca($key);
         $token = $branca->encode("Hello world!");
         sleep(2);
-        $decoded = $branca->decode($token, 1);
+        $decoded = $branca->decode($token, 10);
     }
 }

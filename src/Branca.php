@@ -24,18 +24,24 @@ class Branca
     const VERSION = 0x01;
 
     private $key;
-    private $ttl;
 
     public function __construct($key)
     {
         $this->key = $key;
     }
 
-    public function encode($payload)
+    public function encode($payload, $timestamp = true)
     {
-        $nonce = random_bytes(12);
-        $time = pack("J", (new \DateTime)->getTimeStamp());
+        /* Microsecond timestamp, boolean false will become 0. */
+        if (true === $timestamp) {
+            $timestamp = vsprintf("%d%06d", gettimeofday());
+        } else {
+            $timestamp = (integer) $timestamp;
+        }
+
         $version = pack("C", self::VERSION);
+        $time = pack("J", $timestamp);
+        $nonce = random_bytes(12);
         $header = $version . $time . $nonce;
 
         $ciphertext = crypto_aead_chacha20poly1305_ietf_encrypt(
@@ -49,7 +55,7 @@ class Branca
         return (new Base62)->encode($token);
     }
 
-    public function decode($token, $ttl = 3600)
+    public function decode($token, $ttl = null)
     {
         $token = (new Base62)->decode($token);
         $header = substr($token, 0, 21);
@@ -72,7 +78,8 @@ class Branca
         /* Check for expired token if TTL is set. */
         if (is_integer($ttl)) {
             $future = $parts["time"] + $ttl;
-            if ($future < (new \DateTime)->getTimeStamp()) {
+            $usec = vsprintf("%d%06d", gettimeofday());
+            if ($future < $usec) {
                 throw new \RuntimeException("Expired token.");
             }
         }

@@ -1,16 +1,17 @@
-#  branca
+#  Branca
 
 [![Latest Version](https://img.shields.io/packagist/v/tuupola/branca.svg?style=flat-square)](https://packagist.org/packages/tuupola/branca)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/tuupola/branca/master.svg?style=flat-square)](https://travis-ci.org/tuupola/branca)[![Coverage](http://img.shields.io/codecov/c/github/tuupola/branca.svg?style=flat-square)](https://codecov.io/github/tuupola/branca)
 
-### What?
+## What?
 
-Branca allows you to generate and verify encrypted authentication tokens. Branca is based on [Fernet](https://github.com/fernet/spec/blob/master/Spec.md) with the following differences.
+Branca allows you to generate and verify encrypted authentication tokens. It
+defines the external format and encryption scheme of the token. Branca is based on
+[Fernet specification](https://github.com/fernet/spec/blob/master/Spec.md).
 
-1. Instead of AES 128 CBC and SHA256 HMAC used by Fernet, Branca uses [ChaCha20-Poly1305](https://download.libsodium.org/doc/secret-key_cryptography/chacha20-poly1305.html) Authenticated Encryption with Additional Data (AEAD).
-2. Instead of of Base64URL encoding branca uses Base62 encoding for the token.
-3. Timestamps are stored as microseconds instead of seconds to avoid [race conditions](https://www.lbragstad.com/blog/the-future-of-fernet-tokens) in M2M environments.
+Payload in Branca token is an an arbitrary sequence of bytes. Payload can be for example
+a JSON object, plain text string or even binary data serialized by [MessagePack](http://msgpack.org/) or [Protocol Buffers](https://developers.google.com/protocol-buffers/).
 
 ## Install
 
@@ -19,6 +20,39 @@ Install the library using [Composer](https://getcomposer.org/). Heavy lifting is
 ``` bash
 $ composer require tuupola/branca
 ```
+
+## Token Format
+
+A Branca token is Base62 encoding of a header and ciphertext. Header consists of
+version, timestamp and nonce. Putting them all together we get the structure below.
+
+```
+Version || Timestamp || Nonce || Ciphertext
+```
+
+### Version
+
+Version is 8 bits ie. one byte. Currently the only version is `0xBA`. This is a
+magic byte you can use to quickly identify a given token. Version number defines
+the token format and encryption algorithm.
+
+### Timestamp
+
+Timestamp is 64 bits ie. 8 bytes. Unlike Fernet which uses one second timestamps,
+Branca uses microsecond timestamps. This is to avoid [possible race conditions](https://github.com/fernet/spec/issues/12) in m2m environments.
+
+### Nonce
+
+Nonce is 96 bits ie. 12 bytes. These should be cryptographically secure random bytes
+and never reused.
+
+### Ciphertext
+
+Payload is encrypted and authenticated using [IETF ChaCha20-Poly1305](https://download.libsodium.org/doc/secret-key_cryptography/chacha20-poly1305.html).
+Note that this is Authenticated Encryption with Additional Data (AEAD) where the
+he header part of the token is the additional data. This means the data in the
+header (`version`, `timestamp` and `nonce`) is not encrypted, it is only
+authenticated. In laymans terms, header can be seen but it cannot be tampered.
 
 ## Usage
 
@@ -30,7 +64,7 @@ use Branca\Branca;
 $branca = new Branca("supersecretkeyyoushouldnotcommit");
 $payload = "tuupola@appelsiini.net";
 $token = $branca->encode($payload);
-/* k6ZeAoUNhKljdHYPaIQ7SrjSVebrajjD2ZkymZlbAc5IJl2gypuh41OHZOMZ3P1vwtEEWiSsqU1tP8 */
+/* 2EJjAw8kaF6RwbS8lkVU99fuTlaTLHpxlq2GAr8Jzt2WAIOlqR5jSumGvpxhtPt7lGtTjcdOcYcc8tnT */
 
 $decoded = $branca->decode($token); /* tuupola@appelsiini.net */
 ```
@@ -46,7 +80,7 @@ $payload = json_encode(["scope" => ["read", "write", "delete"]]);
 $token = $branca->encode($payload);
 
 /*
-56NztEBTV3hVj47wEjinRKAWP8tiwyns2bm4e9931xPEo1tIp4VXOvSM1IirLPfMUcYRFWAosDrK7s038MdH7QbdClQcvqi4
+FJA1GbFlJ0qJ8nRzdTfpODKz9WuRD9Vgi9e0KmEW96WCzPL6mo7l8El2P3LDsDm5pYyQ4mV3CIY0HOOT5M87w0nlwJysgafIE
 */
 
 $decoded = $branca->decode($token);

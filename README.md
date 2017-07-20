@@ -8,9 +8,7 @@
 
 Branca allows you to generate and verify encrypted authentication tokens. It
 defines the external format and encryption scheme of the token. Branca is based on
-[Fernet specification](https://github.com/fernet/spec/blob/master/Spec.md).
-
-Payload in Branca token is an an arbitrary sequence of bytes. Payload can be for example
+[Fernet specification](https://github.com/fernet/spec/blob/master/Spec.md). Payload in Branca token is an arbitrary sequence of bytes. Payload can be for example
 a JSON object, plain text string or even binary data serialized by [MessagePack](http://msgpack.org/) or [Protocol Buffers](https://developers.google.com/protocol-buffers/).
 
 ## Install
@@ -23,8 +21,9 @@ $ composer require tuupola/branca
 
 ## Token Format
 
-A Branca token is Base62 encoding of a header and ciphertext. Header consists of
-version, timestamp and nonce. Putting them all together we get the structure below.
+A Branca token is Base62 encoded concatenation of a header and ciphertext. Header
+consists of version, timestamp and nonce. Putting them all together we get the
+structure below.
 
 ```
 Version || Timestamp || Nonce || Ciphertext
@@ -33,7 +32,7 @@ Version || Timestamp || Nonce || Ciphertext
 ### Version
 
 Version is 8 bits ie. one byte. Currently the only version is `0xBA`. This is a
-magic byte you can use to quickly identify a given token. Version number defines
+magic byte you can use to quickly identify a given token. Version number guarantees
 the token format and encryption algorithm.
 
 ### Timestamp
@@ -44,7 +43,7 @@ Branca uses microsecond timestamps. This is to avoid [possible race conditions](
 ### Nonce
 
 Nonce is 96 bits ie. 12 bytes. These should be cryptographically secure random bytes
-and never reused.
+and never reused between tokens.
 
 ### Ciphertext
 
@@ -56,7 +55,8 @@ authenticated. In laymans terms, header can be seen but it cannot be tampered.
 
 ## Usage
 
-Token payload can be any arbitrary data. In below example payload is simple email address. Payload is always tamper proof.
+Token payload can be any arbitrary data such as string containing an email
+address.
 
 ```php
 use Branca\Branca;
@@ -112,7 +112,7 @@ $payload = (new Packer)->pack(["scope" => ["read", "write", "delete"]]);
 $token = $branca->encode($payload);
 
 /*
-3U9QO31MBzZwQ8gF63O1d5bvIvdSzJx9qtNFq8UXV8Jt52u1tDvSSgG6xIeNVolkMuhrpsuHlf2pSMYMHX5W
+ASSIFirFNYjMspeLBxFVJDhgZJqhVVB2bxJTDULXcMRZXqRQoAsnq7ToEOPPcBIr2pSrvrGQtZQnMAY7Zrdbj
 */
 
 $decoded = $branca->decode($token);

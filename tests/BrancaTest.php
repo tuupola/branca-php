@@ -39,7 +39,7 @@ class BrancaTest extends TestCase
     {
         $key = "supersecretkeyyoushouldnotcommit";
         $branca = new Branca($key);
-        $token = $branca->encode("Hello world!", 123206400000000);
+        $token = $branca->encode("Hello world!", 123206400);
         $binary = (new Base62)->decode($token);
         $parts = unpack("Cversion/Jtime", $binary);
         $this->assertEquals(123206400000000, $parts["time"]);
@@ -71,6 +71,6 @@ class BrancaTest extends TestCase
         $branca = new Branca($key);
         $token = $branca->encode("Hello world!");
         sleep(2);
-        $decoded = $branca->decode($token, 10);
+        $decoded = $branca->decode($token, 1);
     }
 }

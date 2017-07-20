@@ -32,11 +32,11 @@ class Branca
 
     public function encode($payload, $timestamp = null)
     {
-        /* Microsecond timestamp, boolean false will become 0. */
+        /* Microsecond timestamp internally, optionally passed in as seconds. */
         if (null === $timestamp) {
             $timestamp = vsprintf("%d%06d", gettimeofday());
         } else {
-            $timestamp = (integer) $timestamp;
+            $timestamp = (integer) $timestamp * 1000000;
         }
 
         $version = pack("C", self::VERSION);
@@ -75,10 +75,10 @@ class Branca
             throw new \RuntimeException("Invalid token.");
         }
 
-        /* Check for expired token if TTL is set. */
+        /* Check for expired token if TTL is set. TTL is passed as seconds. */
         if (is_integer($ttl)) {
-            $future = $parts["time"] + $ttl;
-            $usec = vsprintf("%d%06d", gettimeofday());
+            $future = $parts["time"] + ($ttl * 1000000);
+            $usec = (integer) vsprintf("%d%06d", gettimeofday());
             if ($future < $usec) {
                 throw new \RuntimeException("Expired token.");
             }

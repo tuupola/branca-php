@@ -21,7 +21,7 @@ use function Sodium\crypto_aead_chacha20poly1305_ietf_decrypt;
 
 class Branca
 {
-    const VERSION = 0x01;
+    const VERSION = 0xBA; /* Magic byte, BrancA. */
 
     private $key;
 

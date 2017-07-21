@@ -32,16 +32,16 @@ class Branca
 
     public function encode($payload, $timestamp = null)
     {
-        /* Microsecond timestamp internally, optionally passed in as seconds. */
         if (null === $timestamp) {
-            $timestamp = vsprintf("%d%06d", gettimeofday());
+            $timestamp = time();
         } else {
-            $timestamp = (integer) $timestamp * 1000000;
+            $timestamp = (integer) $timestamp;
         }
 
         $version = pack("C", self::VERSION);
-        $time = pack("J", $timestamp);
+        $time = pack("N", $timestamp);
         $nonce = random_bytes(12);
+
         $header = $version . $time . $nonce;
 
         $ciphertext = crypto_aead_chacha20poly1305_ietf_encrypt(
@@ -58,9 +58,9 @@ class Branca
     public function decode($token, $ttl = null)
     {
         $token = (new Base62)->decode($token);
-        $header = substr($token, 0, 21);
-        $ciphertext = substr($token, 21);
-        $parts = unpack("Cversion/Jtime/Z*nonce", $header);
+        $header = substr($token, 0, 17);
+        $ciphertext = substr($token, 17);
+        $parts = unpack("Cversion/Ntime/Z*nonce", $header);
 
         try {
             $payload = crypto_aead_chacha20poly1305_ietf_decrypt(
@@ -75,11 +75,10 @@ class Branca
             throw new \RuntimeException("Invalid token.");
         }
 
-        /* Check for expired token if TTL is set. TTL is passed as seconds. */
+        /* Check for expired token if TTL is set. */
         if (is_integer($ttl)) {
-            $future = $parts["time"] + ($ttl * 1000000);
-            $usec = (integer) vsprintf("%d%06d", gettimeofday());
-            if ($future < $usec) {
+            $future = $parts["time"] + $ttl;
+            if ($future < time()) {
                 throw new \RuntimeException("Expired token.");
             }
         }

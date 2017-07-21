@@ -37,8 +37,7 @@ the token format and encryption algorithm.
 
 ### Timestamp
 
-Timestamp is 64 bits ie. 8 bytes. Unlike Fernet which uses one second timestamps,
-Branca uses microsecond timestamps. This is to avoid [possible race conditions](https://github.com/fernet/spec/issues/12) in m2m environments.
+Timestamp is 32 bits ie. standard 4 byte UNIX timestamp.
 
 ### Nonce
 

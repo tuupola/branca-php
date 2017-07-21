@@ -63,7 +63,7 @@ use Branca\Branca;
 $branca = new Branca("supersecretkeyyoushouldnotcommit");
 $payload = "tuupola@appelsiini.net";
 $token = $branca->encode($payload);
-/* 2EJjAw8kaF6RwbS8lkVU99fuTlaTLHpxlq2GAr8Jzt2WAIOlqR5jSumGvpxhtPt7lGtTjcdOcYcc8tnT */
+/* 87x2GqCUw7fho4DVETyEPrv8s79gbfRIZB3ql5nliJ42xNNA88VQm7MZZzZs07O8zMC9vke0XuMxb */
 
 $decoded = $branca->decode($token); /* tuupola@appelsiini.net */
 ```
@@ -79,7 +79,7 @@ $payload = json_encode(["scope" => ["read", "write", "delete"]]);
 $token = $branca->encode($payload);
 
 /*
-FJA1GbFlJ0qJ8nRzdTfpODKz9WuRD9Vgi9e0KmEW96WCzPL6mo7l8El2P3LDsDm5pYyQ4mV3CIY0HOOT5M87w0nlwJysgafIE
+3Gq503aijMphOZduh8o0oCw2gtIrsJRFR7CR2Hpbys0A2Fy0bUT6V3j2XvyA0Hu4NwYpODnIkK8cRZbOyCs5amPic8ys
 */
 
 $decoded = $branca->decode($token);
@@ -111,7 +111,7 @@ $payload = (new Packer)->pack(["scope" => ["read", "write", "delete"]]);
 $token = $branca->encode($payload);
 
 /*
-ASSIFirFNYjMspeLBxFVJDhgZJqhVVB2bxJTDULXcMRZXqRQoAsnq7ToEOPPcBIr2pSrvrGQtZQnMAY7Zrdbj
+2EZpjcyhfw5ctQzV67S0swiEJ9U7g30AGUpjL8ovH2chStYP0urF7EXCpNUDDul0IP6iI7bBSnELZita
 */
 
 $decoded = $branca->decode($token);

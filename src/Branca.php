@@ -41,7 +41,7 @@ class Branca
 
         $version = pack("C", self::VERSION);
         $time = pack("N", $timestamp);
-        $nonce = $this->nonce ?? random_bytes(12);
+        $nonce = empty($this->nonce) ? random_bytes(12) : $this->nonce;
 
         $header = $version . $time . $nonce;
 

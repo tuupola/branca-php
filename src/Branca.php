@@ -41,7 +41,11 @@ class Branca
 
         $version = pack("C", self::VERSION);
         $time = pack("N", $timestamp);
-        $nonce = empty($this->nonce) ? random_bytes(12) : $this->nonce;
+
+        $nonce = $this->nonce;
+        if (empty($nonce)) {
+            $nonce = random_bytes(\Sodium\CRYPTO_AEAD_CHACHA20POLY1305_IETF_NPUBBYTES);
+        }
 
         $header = $version . $time . $nonce;
 

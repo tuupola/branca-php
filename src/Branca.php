@@ -84,7 +84,7 @@ class Branca
         if (is_integer($ttl)) {
             $future = $parts["time"] + $ttl;
             if ($future < time()) {
-                throw new \RuntimeException("Expired token.");
+                throw new \RuntimeException("Token is expired.");
             }
         }
 

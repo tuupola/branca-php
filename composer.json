@@ -1,13 +1,13 @@
 {
     "name": "tuupola/branca",
-    "description": "Authenticated Encrypted API Tokens with Associated Data",
+    "description": "Authenticated Encrypted API Tokens for PHP (IETF ChaCha20-Poly1305)",
     "keywords": [
         "jwt",
         "fernet",
         "token",
         "authentication"
     ],
-    "homepage": "https://github.com/tuupola/branca",
+    "homepage": "https://github.com/tuupola/branca-php",
     "license": "MIT",
     "authors": [
         {

@@ -1,6 +1,6 @@
 {
     "name": "tuupola/branca",
-    "description": "Authenticated Encrypted API Tokens with Associated Data",
+    "description": "Authenticated Encrypted API Tokens (IETF XChaCha20-Poly1305 AEAD)",
     "keywords": [
         "jwt",
         "fernet",

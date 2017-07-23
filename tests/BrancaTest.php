@@ -29,7 +29,7 @@ class BrancaTest extends TestCase
     public function testShouldPassTestVector1()
     {
         $key = "supersecretkeyyoushouldnotcommit";
-        $nonce = hex2bin("0102030405060708090a0b0c");
+        $nonce = hex2bin("0102030405060708090a0b0c0102030405060708090a0b0c");
         $timestamp = 123206400;
 
         $branca = new Branca($key);
@@ -38,7 +38,7 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
 
         $this->assertEquals(
-            "4si6Rr26CjfyVydzEiKBwuwkQwvjQhmBHTKSXAyHGcaFYA5kEp45XR1Amgblh",
+            "875GH233T7IYrxtgXxlQBYiFobZMQdHAT51vChKsAIYCFxZtL1evV54vYqLyZtQ0ekPHt8kJHQp0a",
             $token
         );
 

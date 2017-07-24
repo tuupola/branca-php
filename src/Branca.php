@@ -73,6 +73,11 @@ class Branca
         );
         $parts = unpack("Cversion/Ntime/Z*nonce", $header);
 
+        /* Implementation should accept only current version. */
+        if ($parts["version"] !== self::VERSION) {
+            throw new \RuntimeException("Invalid token version.");
+        }
+
         try {
             $payload = Compat::crypto_aead_xchacha20poly1305_ietf_decrypt(
                 $ciphertext,

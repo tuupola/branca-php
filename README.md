@@ -1,4 +1,4 @@
-#  Branca
+#  Branca Tokens for PHP
 
 [![Latest Version](https://img.shields.io/packagist/v/tuupola/branca.svg?style=flat-square)](https://packagist.org/packages/tuupola/branca)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
@@ -6,14 +6,21 @@
 
 ## What?
 
-Branca allows you to generate and verify encrypted authentication tokens. It
-defines the external format and encryption scheme of the token. Branca is based on
-[Fernet specification](https://github.com/fernet/spec/blob/master/Spec.md). Payload in Branca token is an arbitrary sequence of bytes. Payload can be for example
-a JSON object, plain text string or even binary data serialized by [MessagePack](http://msgpack.org/) or [Protocol Buffers](https://developers.google.com/protocol-buffers/).
+[Branca](https://github.com/tuupola/branca-spec) allows you to generate and
+verify encrypted authentication tokens. It defines the external format and
+encryption scheme of the token. Branca is based on
+[Fernet specification](https://github.com/fernet/spec/blob/master/Spec.md).
+Payload in Branca token is an arbitrary sequence of bytes. Payload can be
+for example a JSON object, plain text string or even binary data serialized
+by [MessagePack](http://msgpack.org/) or
+[Protocol Buffers](https://developers.google.com/protocol-buffers/).
 
 ## Install
 
-Install the library using [Composer](https://getcomposer.org/). Heavy lifting is done by [paragonie/sodium_compat](https://github.com/paragonie/sodium_compat) which in turn will use [libsodium](https://paragonie.com/book/pecl-libsodium) if available.
+Install the library using [Composer](https://getcomposer.org/). Heavy lifting
+is done by [paragonie/sodium_compat](https://github.com/paragonie/sodium_compat)
+which in turn will use [libsodium](https://paragonie.com/book/pecl-libsodium)
+if available.
 
 ``` bash
 $ composer require tuupola/branca
@@ -100,7 +107,8 @@ Array
 
 ## Testing
 
-You can run tests either manually or automatically on every code change. Automatic tests require [entr](http://entrproject.org/) to work.
+You can run tests either manually or automatically on every code change.
+Automatic tests require [entr](http://entrproject.org/) to work.
 
 ``` bash
 $ composer test
@@ -122,6 +130,7 @@ Version (1B) || Timestamp (4B) || Nonce (24B) || Ciphertext (*B) || Tag (16B)
 
 String representation of the above binary token must use base62 encoding with
 the following character set.
+
 
 ```
 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy
@@ -161,7 +170,7 @@ authenticated. In laymans terms, header can be seen but it cannot be tampered.
 The authentication tag is 128 bits ie. 16 bytes. This is the
 [Poly1305](https://en.wikipedia.org/wiki/Poly1305) message authentication
 code. It is used to make sure that the payload, as well as the
-non-encrypted header has not been tampered with.
+non-encrypted header have not been tampered with.
 
 ## Contributing
 

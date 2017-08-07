@@ -37,12 +37,5 @@
         "psr-4": {
             "Branca\\": "tests"
         }
-    },
-    "scripts": {
-        "test": "composer phplint && composer phpcs && composer phpunit",
-        "phpcs": "vendor/bin/phpcs --standard=PSR2 --extensions=php --encoding=utf-8 --ignore=*/vendor/* . -p",
-        "phpunit": "vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml --coverage-html ./report/",
-        "phplint": "vendor/bin/phplint . --exclude=vendor/",
-        "watch": "find . -name \"*.php\" -not -path \"./vendor/*\" -o -name \"*.json\" -not -path \"./vendor/*\"| entr -c composer test"
     }
 }

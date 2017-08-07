@@ -114,7 +114,7 @@ $ make test
 ```
 ``` bash
 $ brew install entr
-$ make test
+$ make watch
 ```
 
 ## Token Format

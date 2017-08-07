@@ -107,15 +107,14 @@ Array
 
 ## Testing
 
-You can run tests either manually or automatically on every code change.
-Automatic tests require [entr](http://entrproject.org/) to work.
+You can run tests either manually or automatically on every code change. Automatic tests require [entr](http://entrproject.org/) to work.
 
 ``` bash
-$ composer test
+$ make test
 ```
 ``` bash
 $ brew install entr
-$ composer watch
+$ make test
 ```
 
 ## Token Format

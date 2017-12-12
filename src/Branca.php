@@ -67,11 +67,17 @@ class Branca
             0,
             Compat::CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES + 5
         );
+        $nonce = substr(
+            $header,
+            5,
+            Compat::CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES
+        );
         $ciphertext = substr(
             $token,
             Compat::CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES + 5
         );
-        $parts = unpack("Cversion/Ntime/Z*nonce", $header);
+
+        $parts = unpack("Cversion/Ntime", $header);
 
         /* Implementation should accept only current version. */
         if ($parts["version"] !== self::VERSION) {
@@ -82,7 +88,7 @@ class Branca
             $payload = Compat::crypto_aead_xchacha20poly1305_ietf_decrypt(
                 $ciphertext,
                 $header,
-                $parts["nonce"],
+                $nonce,
                 $this->key
             );
         } catch (\Throwable $error) {

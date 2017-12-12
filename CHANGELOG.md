@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file, in reverse 
 ## [0.3.1](https://github.com/tuupola/branca/compare/0.3.0...0.3.1) - 2017-12-12
 ### Fixed
 - Token validation intermittently failed if nonce contained null bytes.
+- Allow using both tuupola/base62 ^0.8.0 and ^0.9.0.
 
 ## [0.3.0](https://github.com/tuupola/branca/compare/0.2.0...0.3.0) - 2017-07-23
 ### Changed
@@ -16,4 +17,4 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## 0.1.0 - 2017-07-20
 
-Initial realese using IETF ChaCha20-Poly1305 AEAD and 64 but microsecond timestamps.
+Initial realese using IETF ChaCha20-Poly1305 AEAD and 64 bit microsecond timestamps.

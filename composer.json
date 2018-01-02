@@ -26,7 +26,8 @@
         "phpunit/phpunit": "^5.7",
         "squizlabs/php_codesniffer": "^3.0",
         "overtrue/phplint": "^1.0",
-        "nyholm/nsa": "^1.1"
+        "nyholm/nsa": "^1.1",
+        "phpstan/phpstan": "^0.9.1"
     },
     "autoload": {
         "psr-4": {

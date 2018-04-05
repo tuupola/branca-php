@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## [0.3.2](https://github.com/tuupola/branca/compare/0.3.1...0.3.2) - 2018-04-05
+### Fixed
+- Allow using tuupola/base62 ^0.10.0.
+
 ## [0.3.1](https://github.com/tuupola/branca/compare/0.3.0...0.3.1) - 2017-12-12
 ### Fixed
 - Token validation intermittently failed if nonce contained null bytes.

@@ -97,4 +97,13 @@ class BrancaTest extends TestCase
         $token = $branca->encode("Hello world!");
         $decoded = $branca->decode("XX{$token}XX");
     }
+
+    public function testShouldDecodeThrowInvalidToken()
+    {
+        $this->expectException(\RuntimeException::class);
+        $key = "supersecretkeyyoushouldnotcommit";
+        $branca = new Branca($key);
+        $token = $branca->encode("Hello world!");
+        $decoded = $branca->decode(str_replace('Y', 'X', $token));
+    }
 }

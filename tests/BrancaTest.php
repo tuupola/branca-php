@@ -104,6 +104,6 @@ class BrancaTest extends TestCase
         $key = "supersecretkeyyoushouldnotcommit";
         $branca = new Branca($key);
         $token = $branca->encode("Hello world!");
-        $decoded = $branca->decode(str_replace('Y', 'X', $token));
+        $decoded = $branca->decode(strrev($token));
     }
 }

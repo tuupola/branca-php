@@ -36,7 +36,6 @@ SOFTWARE.
 namespace Branca;
 
 use Tuupola\Base62;
-use ParagonIE\Sodium\Compat;
 
 class Branca
 {
@@ -61,12 +60,12 @@ class Branca
 
         $nonce = $this->nonce;
         if (empty($nonce)) {
-            $nonce = random_bytes(Compat::CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
+            $nonce = random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
         }
 
         $header = $version . $time . $nonce;
 
-        $ciphertext = Compat::crypto_aead_xchacha20poly1305_ietf_encrypt(
+        $ciphertext = sodium_crypto_aead_xchacha20poly1305_ietf_encrypt(
             $payload,
             $header,
             $nonce,
@@ -83,16 +82,16 @@ class Branca
         $header = substr(
             $token,
             0,
-            Compat::CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES + 5
+            SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES + 5
         );
         $nonce = substr(
             $header,
             5,
-            Compat::CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES
+            SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES
         );
         $ciphertext = substr(
             $token,
-            Compat::CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES + 5
+            SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES + 5
         );
 
         $parts = unpack("Cversion/Ntime", $header);
@@ -103,7 +102,7 @@ class Branca
         }
 
         try {
-            $payload = Compat::crypto_aead_xchacha20poly1305_ietf_decrypt(
+            $payload = sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
                 $ciphertext,
                 $header,
                 $nonce,

@@ -1,6 +1,6 @@
 {
     "name": "tuupola/branca",
-    "description": "Secure alternative to JWT. Authenticated Encrypted API Tokens. ",
+    "description": "Authenticated and encrypted API tokens using modern crypto.",
     "keywords": [
         "jwt",
         "fernet",
@@ -19,13 +19,13 @@
     ],
     "require": {
         "php": "^7.2",
-        "tuupola/base62": "^0.8.0|^0.9.0|^0.10.0|^0.11.0|^1.0"
+        "tuupola/base62": "^1.0|^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.0|^6.0|^7.0",
-        "squizlabs/php_codesniffer": "^3.0",
+        "squizlabs/php_codesniffer": "^2.0|^3.0",
         "overtrue/phplint": "^1.0",
-        "nyholm/nsa": "^1.1",
+        "nyholm/nsa": "^1.0",
         "phpstan/phpstan": "^0.9.1"
     },
     "autoload": {

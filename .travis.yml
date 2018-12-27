@@ -11,7 +11,7 @@ matrix:
 
 include:
         - php: 7.2
-          env: DEPENDENCIES=lowest
+          env: DEPENDENCIES="lowest"
 
 before_script:
     - travis_retry composer self-update

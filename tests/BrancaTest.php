@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /*
 
 Copyright (c) 2017-2018 Mika Tuupola
@@ -100,7 +102,7 @@ class BrancaTest extends TestCase
     {
         $key = "supersecretkeyyoushouldnotcommit";
         $branca = new Branca($key);
-        $token = $branca->encode("Hello world!", false);
+        $token = $branca->encode("Hello world!", 0);
         $binary = (new Base62)->decode($token);
         $parts = unpack("Cversion/Ntime", $binary);
         $this->assertEquals(0, $parts["time"]);

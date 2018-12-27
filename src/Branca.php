@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /*
 
 Copyright (c) 2017-2018 Mika Tuupola
@@ -48,7 +50,7 @@ class Branca
         $this->key = $key;
     }
 
-    public function encode($payload, $timestamp = null)
+    public function encode(string $payload, int $timestamp = null): string
     {
         if (null === $timestamp) {
             $timestamp = time();
@@ -77,7 +79,7 @@ class Branca
         return (new Base62)->encode($token);
     }
 
-    public function decode($token, $ttl = null)
+    public function decode(string $token, int $ttl = null): string
     {
         $token = (new Base62)->decode($token);
         $header = substr(

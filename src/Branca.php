@@ -99,7 +99,7 @@ class Branca
 
         /* Implementation should accept only current version. */
         if ($parts["version"] !== self::VERSION) {
-            throw new \RuntimeException("Invalid token version.");
+            throw new \RuntimeException("Invalid token version");
         }
 
         try {
@@ -110,16 +110,16 @@ class Branca
                 $this->key
             );
         } catch (\Throwable $error) {
-            throw new \RuntimeException("Invalid token.");
+            throw new \RuntimeException("Invalid token");
         } catch (\Exception $error) {
-            throw new \RuntimeException("Invalid token.");
+            throw new \RuntimeException("Invalid token");
         }
 
         /* Check for expired token if TTL is set. */
         if (is_integer($ttl)) {
             $future = $parts["time"] + $ttl;
             if ($future < time()) {
-                throw new \RuntimeException("Token is expired.");
+                throw new \RuntimeException("Token is expired");
             }
         }
 

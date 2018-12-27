@@ -54,8 +54,6 @@ class Branca
     {
         if (null === $timestamp) {
             $timestamp = time();
-        } else {
-            $timestamp = (integer) $timestamp;
         }
 
         $version = pack("C", self::VERSION);

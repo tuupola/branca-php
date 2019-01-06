@@ -1,6 +1,6 @@
 {
     "name": "tuupola/branca",
-    "description": "Secure alternative to JWT. Authenticated Encrypted API Tokens. ",
+    "description": "Authenticated and encrypted API tokens using modern crypto.",
     "keywords": [
         "jwt",
         "fernet",

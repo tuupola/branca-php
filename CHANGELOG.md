@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## [1.0.0](https://github.com/tuupola/branca/compare/0.3.4...1.0.0) - 2018-12-09
+## [1.0.0](https://github.com/tuupola/branca/compare/0.3.4...1.0.0) - 2019-01-06
 ### Added
 - Allow using tuupola/base62 ^2.0.
 

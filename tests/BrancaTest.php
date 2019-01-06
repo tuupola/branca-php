@@ -65,6 +65,26 @@ class BrancaTest extends TestCase
         $this->assertEquals($payload, $decoded);
     }
 
+    public function testShouldCreateTokenWithZeroTimestamp()
+    {
+        $key = "supersecretkeyyoushouldnotcommit";
+        $nonce = hex2bin("0102030405060708090a0b0c0102030405060708090a0b0c");
+        $timestamp = 0;
+        $payload = "Hello world!";
+
+        $branca = new Branca($key);
+        NSA::setProperty($branca, "nonce", $nonce);
+        $token = $branca->encode($payload, $timestamp);
+        $decoded = $branca->decode($token);
+
+        $this->assertEquals(
+            "870S4BYX9BNSPU3Zy4DPI4MLAK67vYRwLkocJV3DlQdwxBA0ex3fwVt5lTY3viltGFdyMA1E6E3Co",
+            $token
+        );
+
+        $this->assertEquals($payload, $decoded);
+    }
+
     public function testShouldThrowWithWrongVersion()
     {
         $this->expectException(\RuntimeException::class);

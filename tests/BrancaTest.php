@@ -114,4 +114,23 @@ class BrancaTest extends TestCase
         $token = $branca->encode("Hello world!");
         $decoded = $branca->decode("XX{$token}XX");
     }
+
+    public function testShouldHandleLeadingZeroes()
+    {
+        $key = "supersecretkeyyoushouldnotcommit";
+        $nonce = hex2bin("0102030405060708090a0b0c0102030405060708090a0b0c");
+        $timestamp = 123206400;
+        $payload = hex2bin("00000000000000ff");
+
+        $branca = new Branca($key);
+        NSA::setProperty($branca, "nonce", $nonce);
+        $token = $branca->encode($payload, $timestamp);
+        $decoded = $branca->decode($token);
+
+        $this->assertEquals(
+            "1jJDJOEeG2FutA8g7NAOHK4Mh5RIE8jtbXd63uYbrFDSR06dtQl9o2gZYhBa36nZHXVfiGFz",
+            $token
+        );
+        $this->assertEquals("00000000000000ff", bin2hex($decoded));
+    }
 }

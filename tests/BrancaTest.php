@@ -64,6 +64,20 @@ class BrancaTest extends TestCase
         $this->assertEquals("Hello world!", $decoded);
     }
 
+    public function testShouldThrowWithWrongVersion()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        /* This is same token as above but with invalid version 0xBB. */
+        $token = "89mvl3RZe7RwH2x4azVg5V2B7X2NtG4V2YLxHAB3oFc6gyeICmCKAOCQ7Y0n08klY33eQWACd7cSZ";
+        $key = "supersecretkeyyoushouldnotcommit";
+
+        $branca = new Branca($key);
+        $decoded = $branca->decode($token);
+    }
+
+
+
     public function testShouldPassTestVector2()
     {
         $this->expectException(\RuntimeException::class);

@@ -33,8 +33,9 @@ SOFTWARE.
 
 namespace Branca;
 
-use Tuupola\Base62;
+use InvalidArgumentException;
 use ParagonIE\Sodium\Compat;
+use Tuupola\Base62;
 
 class Branca
 {
@@ -45,6 +46,12 @@ class Branca
 
     public function __construct($key)
     {
+        if (Compat::CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES !== strlen($key)) {
+            throw new InvalidArgumentException(
+                sprintf("Key must be exactly %d bytes", Compat::CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES)
+            );
+        }
+
         $this->key = $key;
     }
 

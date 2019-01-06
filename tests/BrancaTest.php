@@ -33,9 +33,10 @@ SOFTWARE.
 
 namespace Branca;
 
+use InvalidArgumentException;
 use Nyholm\NSA;
-use Tuupola\Base62;
 use PHPUnit\Framework\TestCase;
+use Tuupola\Base62;
 
 class BrancaTest extends TestCase
 {
@@ -132,5 +133,12 @@ class BrancaTest extends TestCase
             $token
         );
         $this->assertEquals("00000000000000ff", bin2hex($decoded));
+    }
+
+    public function testShouldThrowWithInvalidKey()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $key = "tooshortkey";
+        $branca = new Branca($key);
     }
 }

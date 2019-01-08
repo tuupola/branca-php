@@ -35,6 +35,7 @@ SOFTWARE.
 
 namespace Branca;
 
+use InvalidArgumentException;
 use Tuupola\Base62;
 
 class Branca
@@ -44,8 +45,13 @@ class Branca
     private $key;
     private $nonce = null; /* This exists only for unit testing. */
 
-    public function __construct($key)
+    public function __construct(string $key)
     {
+        if (SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES !== strlen($key)) {
+            throw new InvalidArgumentException(
+                sprintf("Key must be exactly %d bytes", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES)
+            );
+        }
         $this->key = $key;
     }
 

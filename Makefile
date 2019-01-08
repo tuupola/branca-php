@@ -23,7 +23,7 @@ unit:
 	vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml --coverage-html=./report/
 
 static:
-	vendor/bin/phpstan analyse src tests --level 7
+	vendor/bin/phpstan analyse src tests --level max
 
 watch:
 	find . -name "*.php" -not -path "./vendor/*" -o -name "*.json" -not -path "./vendor/*" | entr -c make test

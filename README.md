@@ -14,14 +14,19 @@ It is possible to use [Branca as an alternative to JWT](https://appelsiini.net/2
 
 ## Install
 
-Install the library using [Composer](https://getcomposer.org/). Heavy lifting
-is done by [paragonie/sodium_compat](https://github.com/paragonie/sodium_compat)
-which in turn will use [libsodium](https://paragonie.com/book/pecl-libsodium)
-if available.
+Install the library using [Composer](https://getcomposer.org/).
+
 
 ``` bash
 $ composer require tuupola/branca
 ```
+
+This branch requires PHP 7.2 or up. The older 1.x branch supports also PHP 5.6, 7.0 and 7.1.
+
+``` bash
+$ composer require "tuupola/branca:^1.0"
+```
+
 ## Usage
 
 Token payload can be any arbitrary data such as string containing an email

@@ -2,9 +2,13 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## [1.0.0](https://github.com/tuupola/branca/compare/0.3.4...1.0.0) - 2019-01-06
+## [1.0.0](https://github.com/tuupola/branca/compare/0.3.4...1.0.0) - 2019-01-08
 ### Added
 - Allow using tuupola/base62 ^2.0.
+
+### Changed
+- Constructor now throws `InvalidArgumentException` if invalid key is given.
+
 
 ## [0.3.4](https://github.com/tuupola/branca/compare/0.3.3...0.3.4) - 2018-12-09
 ### Added

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## [2.0.0](https://github.com/tuupola/branca/compare/1.0.0...2.x) - unreleased
+### Changed
+- PHP 7.2 is now minimum requirement
+- PHP bundled Sodium extension is now used
+- All methods have return types
+- All methods are typehinted
+- All type juggling is removed
+
+## [1.0.0](https://github.com/tuupola/branca/compare/0.3.4...1.0.0) - 2019-01-08
+### Added
+- Allow using tuupola/base62 ^2.0.
+
+### Changed
+- Constructor now throws `InvalidArgumentException` if invalid key is given.
+
 ## [0.3.4](https://github.com/tuupola/branca/compare/0.3.3...0.3.4) - 2018-12-09
 ### Added
 - Allow using tuupola/base62 ^1.0.

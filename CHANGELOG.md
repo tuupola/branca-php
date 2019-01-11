@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## [2.0.0](https://github.com/tuupola/branca/compare/1.0.0...2.x) - unreleased
+## [2.0.0](https://github.com/tuupola/branca/compare/1.0.0...2.0.0) - 2019-01-11
 ### Changed
 - PHP 7.2 is now minimum requirement
 - PHP bundled Sodium extension is now used

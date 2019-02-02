@@ -130,4 +130,11 @@ class Branca
 
         return $payload;
     }
+
+    public function timestamp(string $token): int
+    {
+        $token = (new Base62)->decode($token);
+        $parts = unpack("Cversion/Ntime", $token);
+        return $parts["time"];
+    }
 }

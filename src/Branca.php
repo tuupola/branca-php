@@ -43,7 +43,6 @@ class Branca
     const VERSION = 0xBA; /* Magic byte, BrancA. */
 
     private $key;
-    private $nonce = null; /* This exists only for unit testing. */
 
     public function __construct(string $key)
     {
@@ -63,11 +62,7 @@ class Branca
 
         $version = pack("C", self::VERSION);
         $time = pack("N", $timestamp);
-
-        $nonce = $this->nonce;
-        if (empty($nonce)) {
-            $nonce = random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
-        }
+        $nonce = random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
 
         $header = $version . $time . $nonce;
 

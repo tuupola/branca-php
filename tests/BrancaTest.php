@@ -126,4 +126,12 @@ class BrancaTest extends TestCase
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $this->assertEquals(123206400, $branca->timestamp($token));
     }
+
+    public function testShouldGetTimestamp()
+    {
+        $key = "supersecretkeyyoushouldnotcommit";
+        $token = "1jJDJOEeG2FutA8g7NAOHK4Mh5RIE8jtbXd63uYbrFDSR06dtQl9o2gZYhBa36nZHXVfiGFz";
+        $branca = new Branca($key);
+        $this->assertEquals(123206400, $branca->timestamp($token));
+    }
 }

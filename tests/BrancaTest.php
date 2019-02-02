@@ -46,6 +46,79 @@ class BrancaTest extends TestCase
         $this->assertTrue(true);
     }
 
+    /* These are the tests each implementation should have. */
+    public function testShouldHaveHelloWorldWithZeroTimestamp()
+    {
+        $token = "870S4BYjk7NvyViEjUNsTEmGXbARAX9PamXZg0b3JyeIdGyZkFJhNsOQW6m0K9KnXt3ZUBqDB6hF4";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+
+        $this->assertEquals("Hello world!", $decoded);
+        $this->assertEquals(0, $branca->timestamp($token));
+    }
+
+    public function testShouldHaveHelloWorldWithMaxTimestamp()
+    {
+        $token = "89i7YCwtsSiYfXvOKlgkCyElnGCOEYG7zLCjUp4MuDIZGbkKJgt79Sts9RdW2Yo4imonXsILmqtNb";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+
+        $this->assertEquals("Hello world!", $decoded);
+        $this->assertEquals(4294967295, $branca->timestamp($token));
+    }
+
+    public function testShouldHaveHelloWorldWithNov27Timestamp()
+    {
+        $token = "875GH234UdXU6PkYq8g7tIM80XapDQOH72bU48YJ7SK1iHiLkrqT8Mly7P59TebOxCyQeqpMJ0a7a";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+
+        $this->assertEquals("Hello world!", $decoded);
+        $this->assertEquals(123206400, $branca->timestamp($token));
+    }
+
+    public function testShouldHaveEightNullBytesWithZeroTimestamp()
+    {
+        $token = "1jIBheHWEwYIP59Wpm4QkjkIKuhc12NcYdp9Y60B6av7sZc3vJ5wBwmKJyQzGfJCrvuBgGnf";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+
+        $this->assertEquals("0000000000000000", bin2hex($decoded));
+        $this->assertEquals(0, $branca->timestamp($token));
+    }
+
+    public function testShouldHaveEightNullBytesWithMaxTimestamp()
+    {
+        $token = "1jrx6DUq9HmXvYdmhWMhXzx3klRzhlAjsc3tUFxDPCvZZLm16GYOzsBG4KwF1djjW1yTeZ2B";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+
+        $this->assertEquals("0000000000000000", bin2hex($decoded));
+        $this->assertEquals(4294967295, $branca->timestamp($token));
+    }
+
+    public function testShouldHaveEightNullBytesWithNov27Timestamp()
+    {
+        $token = "1jJDJOEfuc4uBJh5ivaadjo6UaBZJDZ1NsWixVCz2mXw3824JRDQZIgflRqCNKz6yC7a0JKC";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+
+        $this->assertEquals("0000000000000000", bin2hex($decoded));
+        $this->assertEquals(123206400, $branca->timestamp($token));
+    }
+
+    public function testShouldThrowWithWrongVersion()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        /* This token has version 0xBB. */
+        $token = "89mvl3RkwXjpEj5WMxK7GUDEHEeeeZtwjMIOogTthvr44qBfYtQSIZH5MHOTC0GzoutDIeoPVZk3w";
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+    }
+
+    /* These are the PHP implementation specific tests. */
     public function testShouldCreateTokenWithTimestamp()
     {
         $timestamp = 123206400;
@@ -70,17 +143,6 @@ class BrancaTest extends TestCase
 
         $this->assertEquals($payload, $decoded);
         $this->assertEquals($timestamp, $branca->timestamp($token));
-    }
-
-    public function testShouldThrowWithWrongVersion()
-    {
-        $this->expectException(\RuntimeException::class);
-
-        /* This token has version 0xBB. */
-        $token = "89mvl3RZe7RwH2x4azVg5V2B7X2NtG4V2YLxHAB3oFc6gyeICmCKAOCQ7Y0n08klY33eQWACd7cSZ";
-
-        $branca = new Branca("supersecretkeyyoushouldnotcommit");
-        $decoded = $branca->decode($token);
     }
 
     public function testShouldThrowWhenTtlExpired()

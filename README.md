@@ -107,6 +107,25 @@ Array
 */
 ```
 
+## Timestamp
+
+Branca token includes a timestamp when it was created. When decoding you can optionally pass a `ttl` parameter. Value is passed in seconds. Below example throws en exception if token is older than 60 minutes.
+
+```php
+use Branca\Branca;
+
+$branca = new Branca("supersecretkeyyoushouldnotcommit");
+$token = "1jJDJOEeG2FutA8g7NAOHK4Mh5RIE8jtbXd63uYbrFDSR06dtQl9o2gZYhBa36nZHXVfiGFz";
+
+print $branca->timestamp($token); /* 123206400 */
+
+try {
+    $decoded = $branca->decode($token, 3600);
+} catch (RuntimeException $exception) {
+    print $exception->getMessage(); /* Token is expired */
+}
+```
+
 ## Testing
 
 You can run tests either manually or automatically on every code change. Automatic tests require [entr](http://entrproject.org/) to work.

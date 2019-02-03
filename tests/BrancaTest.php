@@ -167,7 +167,7 @@ class BrancaTest extends TestCase
 
     public function testShouldHandlePaylodWithLeadingZeroes()
     {
-        $payload = hex2bin("00000000000000ff");
+        $payload = (string) hex2bin("00000000000000ff");
 
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $token = $branca->encode($payload);

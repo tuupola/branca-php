@@ -115,6 +115,11 @@ class Branca
             throw new \RuntimeException("Invalid token");
         }
 
+        /* In some cases sodium returns false. */
+        if (false === $payload) {
+            throw new \RuntimeException("Invalid token");
+        }
+
         /* Check for expired token if TTL is set. */
         if (is_integer($ttl)) {
             $future = $parts["time"] + $ttl;

@@ -38,9 +38,9 @@ use Branca\Branca;
 $branca = new Branca("supersecretkeyyoushouldnotcommit");
 $payload = "tuupola@appelsiini.net";
 $token = $branca->encode($payload);
-/* 87x2GqCUw7fho4DVETyEPrv8s79gbfRIZB3ql5nliJ42xNNA88VQm7MZZzZs07O8zMC9vke0XuMxb */
+/* hGgg0dPSseaUPZqGloWlDGb2i8hb6iamFBIQaatgYDRhEuaXyByaX0nzmyQk1WYAuSBEMWpB20Z1dENLFItwf1 */
 
-$decoded = $branca->decode($token); /* tuupola@appelsiini.net */
+$decoded = $branca->decode($token); /* someone@example.com */
 ```
 
 Sometimes you might prefer JSON.
@@ -54,7 +54,7 @@ $payload = json_encode(["scope" => ["read", "write", "delete"]]);
 $token = $branca->encode($payload);
 
 /*
-3Gq503aijMphOZduh8o0oCw2gtIrsJRFR7CR2Hpbys0A2Fy0bUT6V3j2XvyA0Hu4NwYpODnIkK8cRZbOyCs5amPic8ys
+5R7p5pC1gU5kfVuBUzhl43Ndh4HLT9fxAHrhN1zNRivTuehY8zYYzrVZ8C6d6VcNLfCk3EUgBwwW6kIk0wm32O34OFIYz5LnOIezwcV2Xsfc
 */
 
 $decoded = $branca->decode($token);
@@ -78,19 +78,20 @@ You can keep the token size small by using a space efficient serialization metho
 
 ```php
 use Branca\Branca;
+use MessagePack\MessagePack;
 use MessagePack\Packer;
-use MessagePack\Unpacker;
+use MessagePack\BufferUnpacker;
 
 $branca = new Branca("supersecretkeyyoushouldnotcommit");
 $payload = (new Packer)->pack(["scope" => ["read", "write", "delete"]]);
 $token = $branca->encode($payload);
 
 /*
-2EZpjcyhfw5ctQzV67S0swiEJ9U7g30AGUpjL8ovH2chStYP0urF7EXCpNUDDul0IP6iI7bBSnELZita
+3iJt0CjqTRh3FGuAf0DHEmhULFIbPVInjguWIkmyCm7RMps5BMJZKa1KwZMN0z58IpPeCxdjoTdkurn9pl0YNrxAQfg3deP0
 */
 
 $decoded = $branca->decode($token);
-$unpacked = (new Unpacker)->unpack($decoded);
+$unpacked = (new BufferUnpacker($decoded))->unpack();
 print_r($unpacked);
 
 /*

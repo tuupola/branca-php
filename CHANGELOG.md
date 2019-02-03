@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## [2.1.0](https://github.com/tuupola/branca/compare/2.0.0...2.x) - unreleased
+## [2.1.0](https://github.com/tuupola/branca/compare/2.0.0...2.1.0) - 2019-02-03
 ### Added
 - Helper method to extract timestamp from a token ([#4](https://github.com/tuupola/branca-php/pull/4)).
 - Compatibility tests from spec ([#7](https://github.com/tuupola/branca-php/pull/7)).

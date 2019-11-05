@@ -4,6 +4,7 @@ dist: trusty
 php:
     - 7.2
     - 7.3
+    - 7.4snapshot
     - nightly
 
 matrix:
@@ -15,6 +16,7 @@ include:
           env: DEPENDENCIES="lowest"
 
 before_script:
+    - if php -v | grep -q "Xdebug"; then phpenv config-rm xdebug.ini; fi
     - travis_retry composer self-update
     - travis_retry composer install --no-interaction
     - if [ "$DEPENDENCIES" = "lowest" ]; then travis_retry composer update --prefer-lowest --prefer-stable --no-interaction; fi;

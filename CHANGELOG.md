@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## [2.2.0](https://github.com/tuupola/branca/compare/2.1.0...2.2.0) - 2020-09-10
+### Added
+- Allow installing with PHP 8 ([#11](https://github.com/tuupola/branca-php/pull/11)).
+
 ## [2.1.0](https://github.com/tuupola/branca/compare/2.0.0...2.1.0) - 2019-02-03
 ### Added
 - Helper method to extract timestamp from a token ([#4](https://github.com/tuupola/branca-php/pull/4)).

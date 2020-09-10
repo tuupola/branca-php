@@ -19,8 +19,8 @@ before_install:
     - cd libsodium && sudo ./configure && sudo make check && sudo make install && cd ..
 
 install:
-    - pecl install libsodium
-    - echo "extension=sodium.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; pecl install libsodium; fi
+    - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; echo "extension=sodium.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
 
 before_script:
     - if php -v | grep -q "Xdebug"; then phpenv config-rm xdebug.ini; fi

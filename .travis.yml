@@ -6,27 +6,35 @@ php:
     - 7.4
     - nightly
 
-matrix:
+env:
+    global:
+        - COMPOSER_ARGS="--no-interaction"
+
+jobs:
+    fast_finish: true
+    include:
+    - php: nightly
+      env: COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
+    - php: 7.2
+      env: DEPENDENCIES="lowest"
     allow_failures:
         - php: nightly
 
 include:
-        - php: 7.2
-          env: DEPENDENCIES="lowest"
 
 before_install:
     - git clone -b stable https://github.com/jedisct1/libsodium.git
     - cd libsodium && sudo ./configure && sudo make check && sudo make install && cd ..
 
 install:
-    - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; pecl install libsodium; fi
-    - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; echo "extension=sodium.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+    - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; then pecl install libsodium; fi
+    - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; then echo "extension=sodium.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
 
 before_script:
     - if php -v | grep -q "Xdebug"; then phpenv config-rm xdebug.ini; fi
     - travis_retry composer self-update
-    - travis_retry composer install --no-interaction
-    - if [ "$DEPENDENCIES" = "lowest" ]; then travis_retry composer update --prefer-lowest --prefer-stable --no-interaction; fi;
+    - travis_retry composer install  $COMPOSER_ARGS
+    - if [ "$DEPENDENCIES" = "lowest" ]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS; fi;
 
 script:
     - make travis

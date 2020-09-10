@@ -42,6 +42,9 @@ class Branca
 {
     const VERSION = 0xBA; /* Magic byte, BrancA. */
 
+    /**
+     * @var string
+     */
     private $key;
 
     public function __construct(string $key)
@@ -111,6 +114,7 @@ class Branca
             );
         } catch (\Throwable $error) {
             throw new \RuntimeException("Invalid token");
+        /** @phpstan-ignore-next-line */
         } catch (\Exception $error) {
             throw new \RuntimeException("Invalid token");
         }

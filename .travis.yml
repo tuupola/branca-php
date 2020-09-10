@@ -4,7 +4,6 @@ php:
     - 7.2
     - 7.3
     - 7.4
-    - nightly
 
 env:
     global:
@@ -23,8 +22,8 @@ jobs:
 include:
 
 before_install:
-    - git clone -b stable https://github.com/jedisct1/libsodium.git
-    - cd libsodium && sudo ./configure && sudo make check && sudo make install && cd ..
+    - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; then git clone -b stable https://github.com/jedisct1/libsodium.git; fi
+    - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; then cd libsodium && sudo ./configure && sudo make check && sudo make install && cd ..; fi
 
 install:
     - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; then pecl install libsodium; fi

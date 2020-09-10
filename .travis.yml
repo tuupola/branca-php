@@ -14,6 +14,14 @@ include:
         - php: 7.2
           env: DEPENDENCIES="lowest"
 
+before_install:
+    - git clone -b stable https://github.com/jedisct1/libsodium.git
+    - cd libsodium && sudo ./configure && sudo make check && sudo make install && cd ..
+
+install:
+    - pecl install libsodium
+    - echo "extension=sodium.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
 before_script:
     - if php -v | grep -q "Xdebug"; then phpenv config-rm xdebug.ini; fi
     - travis_retry composer self-update

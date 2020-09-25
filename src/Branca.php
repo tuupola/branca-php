@@ -49,6 +49,11 @@ class Branca
 
     public function __construct(string $key)
     {
+        /* Apparently some PHP 7.2 versions do not have this defined. */
+        if (!defined("SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES")) {
+            define("SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES", 32);
+        }
+
         if (SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES !== strlen($key)) {
             throw new InvalidArgumentException(
                 sprintf("Key must be exactly %d bytes", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES)

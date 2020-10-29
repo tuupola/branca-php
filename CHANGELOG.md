@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## [2.2.1](https://github.com/tuupola/branca/compare/2.2.0...2.x) - unreleased
+## [2.2.1](https://github.com/tuupola/branca/compare/2.2.0...2.2.1) - 2020-10-29
 ### Fixed
 - Add `SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES` define which is missing from some PHP 7.2 installations ([#12](https://github.com/tuupola/branca-php/pull/12)).
 

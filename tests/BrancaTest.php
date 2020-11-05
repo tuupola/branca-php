@@ -118,6 +118,17 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
     }
 
+    public function testShouldHandleEmptyPayload()
+    {
+        $payload = "";
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $token = $branca->encode($payload);
+        $decoded = $branca->decode($token);
+
+        $this->assertEquals("", $decoded);
+    }
+
     /* These are the PHP implementation specific tests. */
     public function testShouldCreateTokenWithTimestamp()
     {
@@ -174,17 +185,6 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
 
         $this->assertEquals("00000000000000ff", bin2hex($decoded));
-    }
-
-    public function testShouldHandleEmptyPayload()
-    {
-        $payload = "";
-
-        $branca = new Branca("supersecretkeyyoushouldnotcommit");
-        $token = $branca->encode($payload);
-        $decoded = $branca->decode($token);
-
-        $this->assertEquals("", $decoded);
     }
 
     public function testShouldThrowWithInvalidKey()

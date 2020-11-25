@@ -36,8 +36,11 @@ SOFTWARE.
 namespace Branca;
 
 use InvalidArgumentException;
+use RuntimeException;
+use SodiumException;
 use PHPUnit\Framework\TestCase;
 use Tuupola\Base62;
+use Nyholm\NSA;
 
 class BrancaTest extends TestCase
 {
@@ -47,19 +50,36 @@ class BrancaTest extends TestCase
     }
 
     /* These are the tests each implementation should have. */
-    public function testShouldHaveHelloWorldWithZeroTimestamp()
+    public function testShouldDecodeHelloWorldWithZeroTimestamp()
     {
-        $token = "870S4BYjk7NvyViEjUNsTEmGXbARAX9PamXZg0b3JyeIdGyZkFJhNsOQW6m0K9KnXt3ZUBqDB6hF4";
+        //$token = "870S4BYjk7NvyViEjUNsTEmGXbARAX9PamXZg0b3JyeIdGyZkFJhNsOQW6m0K9KnXt3ZUBqDB6hF4";
+        $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
-        $decoded = $branca->decode($token);
+        $payload = $branca->decode($token);
 
-        $this->assertEquals("Hello world!", $decoded);
+        $this->assertEquals("Hello world!", $payload);
         $this->assertEquals(0, $branca->timestamp($token));
     }
 
-    public function testShouldHaveHelloWorldWithMaxTimestamp()
+    public function testShouldEncodeHelloWorldWithZeroTimestamp()
     {
-        $token = "89i7YCwtsSiYfXvOKlgkCyElnGCOEYG7zLCjUp4MuDIZGbkKJgt79Sts9RdW2Yo4imonXsILmqtNb";
+        $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
+        //$nonce = hex2bin("5b2add425fb626281c495a6fa8831fc9f0cf40328740751a");
+        $nonce = hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef");
+        $payload = "Hello world!";
+        $timestamp = 0;
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload, $timestamp);
+
+        $this->assertEquals($token, $encoded);
+    }
+
+    public function testShouldDecodeHelloWorldWithMaxTimestamp()
+    {
+        $token = "89i7YCwu5tWAJNHUDdmIqhzOi5hVHOd4afjZcGMcVmM4enl4yeLiDyYv41eMkNmTX6IwYEFErCSqr";
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $decoded = $branca->decode($token);
 
@@ -67,9 +87,24 @@ class BrancaTest extends TestCase
         $this->assertEquals(4294967295, $branca->timestamp($token));
     }
 
-    public function testShouldHaveHelloWorldWithNov27Timestamp()
+    public function testShouldEncodeHelloWorldWithMaxTimestamp()
     {
-        $token = "875GH234UdXU6PkYq8g7tIM80XapDQOH72bU48YJ7SK1iHiLkrqT8Mly7P59TebOxCyQeqpMJ0a7a";
+        $token = "89i7YCwu5tWAJNHUDdmIqhzOi5hVHOd4afjZcGMcVmM4enl4yeLiDyYv41eMkNmTX6IwYEFErCSqr";
+        $nonce = hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef");
+        $payload = "Hello world!";
+        $timestamp = 4294967295;
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload, $timestamp);
+
+        $this->assertEquals($token, $encoded);
+    }
+
+    public function testShouldDecodeHelloWorldWithNov27Timestamp()
+    {
+        $token = "875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT";
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $decoded = $branca->decode($token);
 
@@ -77,9 +112,24 @@ class BrancaTest extends TestCase
         $this->assertEquals(123206400, $branca->timestamp($token));
     }
 
-    public function testShouldHaveEightNullBytesWithZeroTimestamp()
+    public function testShouldEncodeHelloWorldWithNov27Timestamp()
     {
-        $token = "1jIBheHWEwYIP59Wpm4QkjkIKuhc12NcYdp9Y60B6av7sZc3vJ5wBwmKJyQzGfJCrvuBgGnf";
+        $token = "875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT";
+        $nonce = hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef");
+        $payload = "Hello world!";
+        $timestamp = 123206400;
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload, $timestamp);
+
+        $this->assertEquals($token, $encoded);
+    }
+
+    public function testShouldDecodeEightNullBytesWithZeroTimestamp()
+    {
+        $token = "1jIBheHbDdkCDFQmtgw4RUZeQoOJgGwTFJSpwOAk3XYpJJr52DEpILLmmwYl4tjdSbbNqcF1";
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $decoded = $branca->decode($token);
 
@@ -87,9 +137,24 @@ class BrancaTest extends TestCase
         $this->assertEquals(0, $branca->timestamp($token));
     }
 
-    public function testShouldHaveEightNullBytesWithMaxTimestamp()
+    public function testShouldEncodeEightNullBytesWithZeroTimestamp()
     {
-        $token = "1jrx6DUq9HmXvYdmhWMhXzx3klRzhlAjsc3tUFxDPCvZZLm16GYOzsBG4KwF1djjW1yTeZ2B";
+        $token = "1jIBheHbDdkCDFQmtgw4RUZeQoOJgGwTFJSpwOAk3XYpJJr52DEpILLmmwYl4tjdSbbNqcF1";
+        $nonce = hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef");
+        $payload = hex2bin("0000000000000000");
+        $timestamp = 0;
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload, $timestamp);
+
+        $this->assertEquals($token, $encoded);
+    }
+
+    public function testShouldDecodeEightNullBytesWithMaxTimestamp()
+    {
+        $token = "1jrx6DUu5q06oxykef2e2ZMyTcDRTQot9ZnwgifUtzAphGtjsxfbxXNhQyBEOGtpbkBgvIQx";
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $decoded = $branca->decode($token);
 
@@ -97,25 +162,128 @@ class BrancaTest extends TestCase
         $this->assertEquals(4294967295, $branca->timestamp($token));
     }
 
-    public function testShouldHaveEightNullBytesWithNov27Timestamp()
+    public function testShouldEncodeEightNullBytesWithMaxTimestamp()
     {
-        $token = "1jJDJOEfuc4uBJh5ivaadjo6UaBZJDZ1NsWixVCz2mXw3824JRDQZIgflRqCNKz6yC7a0JKC";
+        $token = "1jrx6DUu5q06oxykef2e2ZMyTcDRTQot9ZnwgifUtzAphGtjsxfbxXNhQyBEOGtpbkBgvIQx";
+        $nonce = hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef");
+        $payload = hex2bin("0000000000000000");
+        $timestamp = 4294967295;
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload, $timestamp);
+
+        $this->assertEquals($token, $encoded);
+    }
+
+    public function testShouldDecodeEightNullBytesWithNov27Timestamp()
+    {
+        $token = "1jJDJOEjuwVb9Csz1Ypw1KBWSkr0YDpeBeJN6NzJWx1VgPLmcBhu2SbkpQ9JjZ3nfUf7Aytp";
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $decoded = $branca->decode($token);
 
         $this->assertEquals("0000000000000000", bin2hex($decoded));
         $this->assertEquals(123206400, $branca->timestamp($token));
+    }
+
+    public function testShouldEncodeEightNullBytesWithNov27Timestamp()
+    {
+        $token = "1jJDJOEjuwVb9Csz1Ypw1KBWSkr0YDpeBeJN6NzJWx1VgPLmcBhu2SbkpQ9JjZ3nfUf7Aytp";
+        $nonce = hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef");
+        $payload = hex2bin("0000000000000000");
+        $timestamp = 123206400;
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload, $timestamp);
+
+        $this->assertEquals($token, $encoded);
     }
 
     public function testShouldThrowWithWrongVersion()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         /* This token has version 0xBB. */
         $token = "89mvl3RkwXjpEj5WMxK7GUDEHEeeeZtwjMIOogTthvr44qBfYtQSIZH5MHOTC0GzoutDIeoPVZk3w";
 
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $decoded = $branca->decode($token);
+    }
+
+    /* TTL expired */
+    // public function testShouldThrowWhenExpired() {
+
+    // }
+
+    public function testShouldThrowWithInvalidBase62Characters()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $token = "875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT_";
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+    }
+
+    public function testShouldThrowWithInvalidKey()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
+
+        $branca = new Branca("tooshortkey");
+        $decoded = $branca->decode($token);
+    }
+
+    public function testShouldThrowWithInvalidNonce()
+    {
+        $this->expectException(SodiumException::class);
+
+        $nonce = hex2bin("dead");
+        $payload = "Hello world!";
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload);
+    }
+
+    public function testShouldThrowWithWrongKey()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
+
+        $branca = new Branca("wrongsecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+    }
+
+    public function testShouldDecodeEmptyPayloadWithZeroTimestamp()
+    {
+        $token = "4sfD0vPFhIif8cy4nB3BQkHeJqkOkDvinI4zIhMjYX4YXZU5WIq9ycCVjGzB5";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $payload = $branca->decode($token);
+
+        $this->assertEquals("", $payload);
+        $this->assertEquals(0, $branca->timestamp($token));
+    }
+
+    public function testShouldEncodeEmptyPayloadWithZeroTimestamp()
+    {
+        $token = "4sfD0vPFhIif8cy4nB3BQkHeJqkOkDvinI4zIhMjYX4YXZU5WIq9ycCVjGzB5";
+        $nonce = hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef");
+        $payload = "";
+        $timestamp = 0;
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload, $timestamp);
+
+        $this->assertEquals($token, $encoded);
     }
 
     /* These are the PHP implementation specific tests. */
@@ -176,11 +344,11 @@ class BrancaTest extends TestCase
         $this->assertEquals("00000000000000ff", bin2hex($decoded));
     }
 
-    public function testShouldThrowWithInvalidKey()
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $branca = new Branca("tooshortkey");
-    }
+    // public function testShouldThrowWithInvalidKey()
+    // {
+    //     $this->expectException(InvalidArgumentException::class);
+    //     $branca = new Branca("tooshortkey");
+    // }
 
     public function testShouldGetTimestamp()
     {

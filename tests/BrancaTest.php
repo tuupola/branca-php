@@ -214,9 +214,6 @@ class BrancaTest extends TestCase
     }
 
     /* TTL expired */
-    // public function testShouldThrowWhenExpired() {
-
-    // }
 
     public function testShouldThrowWithInvalidBase62Characters()
     {
@@ -260,8 +257,6 @@ class BrancaTest extends TestCase
         $branca = new Branca("wrongsecretkeyyoushouldnotcommit");
         $decoded = $branca->decode($token);
     }
-
-    /* Wrong nonce. */
 
     /* Wrong nonce. */
     /* Modified version. */
@@ -321,32 +316,6 @@ class BrancaTest extends TestCase
     }
 
     /* These are the PHP implementation specific tests. */
-    public function testShouldCreateTokenWithTimestamp()
-    {
-        $timestamp = 123206400;
-        $payload = "Hello world!";
-
-        $branca = new Branca("supersecretkeyyoushouldnotcommit");
-        $token = $branca->encode($payload, $timestamp);
-        $decoded = $branca->decode($token);
-
-        $this->assertEquals($payload, $decoded);
-        $this->assertEquals($timestamp, $branca->timestamp($token));
-    }
-
-    public function testShouldCreateTokenWithZeroTimestamp()
-    {
-        $timestamp = 0;
-        $payload = "Hello world!";
-
-        $branca = new Branca("supersecretkeyyoushouldnotcommit");
-        $token = $branca->encode($payload, $timestamp);
-        $decoded = $branca->decode($token);
-
-        $this->assertEquals($payload, $decoded);
-        $this->assertEquals($timestamp, $branca->timestamp($token));
-    }
-
     public function testShouldThrowWhenTtlExpired()
     {
         $this->expectException(\RuntimeException::class);
@@ -365,29 +334,5 @@ class BrancaTest extends TestCase
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $token = $branca->encode("Hello world!");
         $decoded = $branca->decode("XX{$token}XX");
-    }
-
-    public function testShouldHandlePaylodWithLeadingZeroes()
-    {
-        $payload = (string) hex2bin("00000000000000ff");
-
-        $branca = new Branca("supersecretkeyyoushouldnotcommit");
-        $token = $branca->encode($payload);
-        $decoded = $branca->decode($token);
-
-        $this->assertEquals("00000000000000ff", bin2hex($decoded));
-    }
-
-    // public function testShouldThrowWithInvalidKey()
-    // {
-    //     $this->expectException(InvalidArgumentException::class);
-    //     $branca = new Branca("tooshortkey");
-    // }
-
-    public function testShouldGetTimestamp()
-    {
-        $token = "1jJDJOEeG2FutA8g7NAOHK4Mh5RIE8jtbXd63uYbrFDSR06dtQl9o2gZYhBa36nZHXVfiGFz";
-        $branca = new Branca("supersecretkeyyoushouldnotcommit");
-        $this->assertEquals(123206400, $branca->timestamp($token));
     }
 }

@@ -261,6 +261,16 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
     }
 
+    /* Wrong nonce. */
+
+    /* Wrong nonce. */
+    /* Modified version. */
+    /* Modified first byte of nonce. */
+    /* Modified first byte of timestamp. */
+    /* Modified last byte of ciphertext. */
+    /* Modified last byte of Poly1305 tag. */
+    /* Overflow timestamp. */
+
     public function testShouldDecodeEmptyPayloadWithZeroTimestamp()
     {
         $token = "4sfD0vPFhIif8cy4nB3BQkHeJqkOkDvinI4zIhMjYX4YXZU5WIq9ycCVjGzB5";
@@ -277,6 +287,30 @@ class BrancaTest extends TestCase
         $nonce = hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef");
         $payload = "";
         $timestamp = 0;
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload, $timestamp);
+
+        $this->assertEquals($token, $encoded);
+    }
+
+    public function testShouldDecodeNonUtf8Characters()
+    {
+        $token = "K9u6d0zjXp8RXNUGDyXAsB9AtPo60CD3xxQ2ulL8aQoTzXbvockRff0y1eXoHm";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $payload = $branca->decode($token);
+
+        $this->assertEquals("80", bin2hex($payload));
+    }
+
+    public function testShouldEncodeNonUtf8Characters()
+    {
+        $token = "K9u6d0zjXp8RXNUGDyXAsB9AtPo60CD3xxQ2ulL8aQoTzXbvockRff0y1eXoHm";
+        $nonce = hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef");
+        $payload = hex2bin("80");
+        $timestamp = 123206400;
 
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         NSA::setProperty($branca, "nonce", $nonce);

@@ -323,6 +323,7 @@ class BrancaTest extends TestCase
 
     The Poly1305 tag was then modified to: f3faf98dd385c68046fb7ed63c949900
     875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trk0
+
     */
     public function testShouldThrowWithModifiedPoly1305Tag()
     {
@@ -332,8 +333,6 @@ class BrancaTest extends TestCase
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $decoded = $branca->decode($token);
     }
-
-    /* Overflow timestamp. */
 
     public function testShouldDecodeEmptyPayloadWithZeroTimestamp()
     {
@@ -394,6 +393,20 @@ class BrancaTest extends TestCase
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $token = $branca->encode("Hello world!", $timestamp);
         $decoded = $branca->decode($token, 3600);
+    }
+
+    public function testShouldThrowWhenTimestampOverflows()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        /* Token with 123206400 timestamp. */
+        $token = "875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT";
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+
+        /* Add maximum value to make timestamp overflow. */
+        $ttl = 4294967295;
+        $decoded = $branca->decode($token, $ttl);
     }
 
     public function testShouldThrowInvalidToken()

@@ -259,11 +259,80 @@ class BrancaTest extends TestCase
     }
 
     /* Wrong nonce. */
-    /* Modified version. */
-    /* Modified first byte of nonce. */
-    /* Modified first byte of timestamp. */
-    /* Modified last byte of ciphertext. */
-    /* Modified last byte of Poly1305 tag. */
+
+    /*
+
+    Token was first created with nonce:
+    hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
+    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+
+    The nonce was then modified to:
+    hex2bin("00efbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
+    875GH233SUysT7fQ711EWd9BXpwOjB72ng3ZLnjWFrmOqVy49Bv93b78JU5331LbcY0EEzhLfpmSx
+
+    */
+    public function testShouldThrowWithModifiedNonce()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $token = "875GH233SUysT7fQ711EWd9BXpwOjB72ng3ZLnjWFrmOqVy49Bv93b78JU5331LbcY0EEzhLfpmSx";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+    }
+
+    /*
+
+    Token was first created with time: 0757fb00
+    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+
+    The time was then modified to: 0057fb00
+    870g1RCk4lW1YInhaU3TP8u2hGtfol16ettLcTOSoA0JIpjCaQRW7tQeP6dQmTvFIB2s6wL5deMXr
+
+    */
+    public function testShouldThrowWithModifiedTimestamp()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $token = "870g1RCk4lW1YInhaU3TP8u2hGtfol16ettLcTOSoA0JIpjCaQRW7tQeP6dQmTvFIB2s6wL5deMXr";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+    }
+
+    /*
+
+    Original ciphertext in token was: d8fdbaf35dc37a98b523e6fe
+    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+
+    The ciphertext was then modified to: d8fdbaf35dc37a98b523e600
+    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5Qw6Jpo96myliI3hHD7VbKZBYh
+
+    */
+    public function testShouldThrowWithModifiedCiphertext()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $token = "875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5Qw6Jpo96myliI3hHD7VbKZBYh";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+    }
+
+    /*
+
+    Original Poly1305 tag was: f3faf98dd385c68046fb7ed63c94995b
+    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+
+    The Poly1305 tag was then modified to: f3faf98dd385c68046fb7ed63c949900
+    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trk0
+    */
+    public function testShouldThrowWithModifiedPoly1305Tag()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $token = "875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trk0";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+    }
+
     /* Overflow timestamp. */
 
     public function testShouldDecodeEmptyPayloadWithZeroTimestamp()

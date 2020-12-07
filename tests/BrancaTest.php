@@ -50,6 +50,9 @@ class BrancaTest extends TestCase
      * cases.
      */
 
+    /**
+      * Test vector 0
+      */
     public function testShouldDecodeHelloWorldWithZeroTimestamp()
     {
         $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
@@ -60,6 +63,9 @@ class BrancaTest extends TestCase
         $this->assertEquals(0, $branca->timestamp($token));
     }
 
+    /**
+      * Test vector 1
+      */
     public function testShouldDecodeHelloWorldWithMaxTimestamp()
     {
         $token = "89i7YCwu5tWAJNHUDdmIqhzOi5hVHOd4afjZcGMcVmM4enl4yeLiDyYv41eMkNmTX6IwYEFErCSqr";
@@ -69,7 +75,9 @@ class BrancaTest extends TestCase
         $this->assertEquals("Hello world!", $decoded);
         $this->assertEquals(4294967295, $branca->timestamp($token));
     }
-
+    /**
+      * Test vector 2
+      */
     public function testShouldDecodeHelloWorldWithNov27Timestamp()
     {
         $token = "875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT";
@@ -80,6 +88,9 @@ class BrancaTest extends TestCase
         $this->assertEquals(123206400, $branca->timestamp($token));
     }
 
+    /**
+      * Test vector 3
+      */
     public function testShouldDecodeEightNullBytesWithZeroTimestamp()
     {
         $token = "1jIBheHbDdkCDFQmtgw4RUZeQoOJgGwTFJSpwOAk3XYpJJr52DEpILLmmwYl4tjdSbbNqcF1";
@@ -90,6 +101,9 @@ class BrancaTest extends TestCase
         $this->assertEquals(0, $branca->timestamp($token));
     }
 
+    /**
+      * Test vector 4
+      */
     public function testShouldDecodeEightNullBytesWithMaxTimestamp()
     {
         $token = "1jrx6DUu5q06oxykef2e2ZMyTcDRTQot9ZnwgifUtzAphGtjsxfbxXNhQyBEOGtpbkBgvIQx";
@@ -100,6 +114,9 @@ class BrancaTest extends TestCase
         $this->assertEquals(4294967295, $branca->timestamp($token));
     }
 
+    /**
+      * Test vector 5
+      */
     public function testShouldDecodeEightNullBytesWithNov27Timestamp()
     {
         $token = "1jJDJOEjuwVb9Csz1Ypw1KBWSkr0YDpeBeJN6NzJWx1VgPLmcBhu2SbkpQ9JjZ3nfUf7Aytp";
@@ -130,6 +147,7 @@ class BrancaTest extends TestCase
     }
 
     /**
+     * Test vector 6
      * Token is otherwise valid, but it has version 0xBB.
      */
     public function testShouldThrowWithWrongVersion()
@@ -142,6 +160,9 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
     }
 
+    /**
+      * Test vector 8
+      */
     public function testShouldThrowWithInvalidBase62Characters()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -153,6 +174,8 @@ class BrancaTest extends TestCase
     }
 
     /**
+     * Test vector 9
+     *
      * Key length should be 32 bytes.
      */
     public function testShouldThrowWithInvalidKey()
@@ -165,6 +188,9 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
     }
 
+    /**
+      * Test vector 11
+      */
     public function testShouldThrowWithWrongKey()
     {
         $this->expectException(RuntimeException::class);
@@ -175,17 +201,21 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
     }
 
-    /*
+    /**
+      * Test vector 13
+      */
 
-    Token was created with nonce:
-    hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
-    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
-
-    Before base62 encoding the nonce was modified to:
-    hex2bin("00efbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
-    875GH233SUysT7fQ711EWd9BXpwOjB72ng3ZLnjWFrmOqVy49Bv93b78JU5331LbcY0EEzhLfpmSx
-
-    */
+    /**
+      * Test vector 14
+      *
+      * Token was created with nonce:
+      * hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
+      * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+      *
+      * Before base62 encoding the nonce was modified to:
+      * hex2bin("00efbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
+      * 875GH233SUysT7fQ711EWd9BXpwOjB72ng3ZLnjWFrmOqVy49Bv93b78JU5331LbcY0EEzhLfpmSx
+      */
     public function testShouldThrowWithModifiedNonce()
     {
         $this->expectException(RuntimeException::class);
@@ -195,15 +225,15 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
     }
 
-    /*
-
-    Token was created with time: hex2bin("0757fb00")
-    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
-
-    Before base62 encoding the time was modified to: hex2bin("0057fb00")
-    870g1RCk4lW1YInhaU3TP8u2hGtfol16ettLcTOSoA0JIpjCaQRW7tQeP6dQmTvFIB2s6wL5deMXr
-
-    */
+    /**
+     * Test vector 15
+     *
+     * Token was created with time: hex2bin("0757fb00")
+     * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+     *
+     * Before base62 encoding the time was modified to: hex2bin("0057fb00")
+     * 870g1RCk4lW1YInhaU3TP8u2hGtfol16ettLcTOSoA0JIpjCaQRW7tQeP6dQmTvFIB2s6wL5deMXr
+     */
     public function testShouldThrowWithModifiedTimestamp()
     {
         $this->expectException(RuntimeException::class);
@@ -213,17 +243,17 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
     }
 
-    /*
-
-    Original ciphertext in token was:
-    hex2bin("d8fdbaf35dc37a98b523e6fe")
-    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
-
-    Before base62 encoding the ciphertext was modified to:
-    hex2bin("d8fdbaf35dc37a98b523e600")
-    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5Qw6Jpo96myliI3hHD7VbKZBYh
-
-    */
+    /**
+     * Test vector 16
+     *
+     * Original ciphertext in token was:
+     * hex2bin("d8fdbaf35dc37a98b523e6fe")
+     * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+     *
+     * Before base62 encoding the ciphertext was modified to:
+     * hex2bin("d8fdbaf35dc37a98b523e600")
+     * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5Qw6Jpo96myliI3hHD7VbKZBYh
+     */
     public function testShouldThrowWithModifiedCiphertext()
     {
         $this->expectException(RuntimeException::class);
@@ -233,17 +263,17 @@ class BrancaTest extends TestCase
         $decoded = $branca->decode($token);
     }
 
-    /*
-
-    Original Poly1305 tag was:
-    hex2bin("f3faf98dd385c68046fb7ed63c94995b")
-    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
-
-    Before base62 encoding the Poly1305 tag was modified to:
-    hex2bin("f3faf98dd385c68046fb7ed63c949900")
-    875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trk0
-
-    */
+    /**
+     * Test vector 17
+     *
+     * Original Poly1305 tag was:
+     * hex2bin("f3faf98dd385c68046fb7ed63c94995b")
+     * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+     *
+     * Before base62 encoding the Poly1305 tag was modified to:
+     * hex2bin("f3faf98dd385c68046fb7ed63c949900")
+     * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trk0
+     */
     public function testShouldThrowWithModifiedPoly1305Tag()
     {
         $this->expectException(RuntimeException::class);
@@ -350,6 +380,9 @@ class BrancaTest extends TestCase
         $this->assertEquals($token, $encoded);
     }
 
+    /**
+      * Test vector 10
+      */
     public function testShouldThrowWithInvalidNonce()
     {
         $this->expectException(SodiumException::class);
@@ -363,6 +396,9 @@ class BrancaTest extends TestCase
         $encoded = $branca->encode($payload);
     }
 
+    /**
+      * Test vector 19
+      */
     public function testShouldEncodeEmptyPayloadWithZeroTimestamp()
     {
         $token = "4sfD0vPFhIif8cy4nB3BQkHeJqkOkDvinI4zIhMjYX4YXZU5WIq9ycCVjGzB5";
@@ -378,6 +414,9 @@ class BrancaTest extends TestCase
         $this->assertEquals($token, $encoded);
     }
 
+    /**
+      * Test vector 20
+      */
     public function testShouldEncodeNonUtf8Characters()
     {
         $token = "K9u6d0zjXp8RXNUGDyXAsB9AtPo60CD3xxQ2ulL8aQoTzXbvockRff0y1eXoHm";
@@ -394,11 +433,9 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * These are implementation specific tests. For example if implementation
-     * provides TTL checks they should be tested here. TTL check is not a feature
-     * of the token, it is feature of the implementation.
+     * These are PHP implementation specific tests. For example TTL check is not a
+     * feature of the token, it is feature of the implementation.
      */
-
     public function testShouldThrowWhenTtlExpired()
     {
         $this->expectException(\RuntimeException::class);

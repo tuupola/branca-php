@@ -177,11 +177,11 @@ class BrancaTest extends TestCase
 
     /*
 
-    Token was first created with nonce:
+    Token was created with nonce:
     hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
     875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
 
-    The nonce was then modified to:
+    Before base62 encoding the nonce was modified to:
     hex2bin("00efbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
     875GH233SUysT7fQ711EWd9BXpwOjB72ng3ZLnjWFrmOqVy49Bv93b78JU5331LbcY0EEzhLfpmSx
 
@@ -197,10 +197,10 @@ class BrancaTest extends TestCase
 
     /*
 
-    Token was first created with time: hex2bin("0757fb00")
+    Token was created with time: hex2bin("0757fb00")
     875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
 
-    The time was then modified to: hex2bin("0057fb00")
+    Before base62 encoding the time was modified to: hex2bin("0057fb00")
     870g1RCk4lW1YInhaU3TP8u2hGtfol16ettLcTOSoA0JIpjCaQRW7tQeP6dQmTvFIB2s6wL5deMXr
 
     */
@@ -215,10 +215,12 @@ class BrancaTest extends TestCase
 
     /*
 
-    Original ciphertext in token was: hex2bin("d8fdbaf35dc37a98b523e6fe")
+    Original ciphertext in token was:
+    hex2bin("d8fdbaf35dc37a98b523e6fe")
     875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
 
-    The ciphertext was then modified to: hex2bin("d8fdbaf35dc37a98b523e600")
+    Before base62 encoding the ciphertext was modified to:
+    hex2bin("d8fdbaf35dc37a98b523e600")
     875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5Qw6Jpo96myliI3hHD7VbKZBYh
 
     */
@@ -233,10 +235,12 @@ class BrancaTest extends TestCase
 
     /*
 
-    Original Poly1305 tag was: hex2bin("f3faf98dd385c68046fb7ed63c94995b")
+    Original Poly1305 tag was:
+    hex2bin("f3faf98dd385c68046fb7ed63c94995b")
     875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
 
-    The Poly1305 tag was then modified to: hex2bin("f3faf98dd385c68046fb7ed63c949900")
+    Before base62 encoding the Poly1305 tag was modified to:
+    hex2bin("f3faf98dd385c68046fb7ed63c949900")
     875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trk0
 
     */

@@ -51,7 +51,7 @@ class BrancaTest extends TestCase
      */
 
     /**
-      * Test vector 0
+      * Test vector X (currently 3)
       */
     public function testShouldDecodeHelloWorldWithZeroTimestamp()
     {
@@ -64,7 +64,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 1
+      * Test vector X (currently 4)
       */
     public function testShouldDecodeHelloWorldWithMaxTimestamp()
     {
@@ -76,7 +76,7 @@ class BrancaTest extends TestCase
         $this->assertEquals(4294967295, $branca->timestamp($token));
     }
     /**
-      * Test vector 2
+      * Test vector X (currently 5)
       */
     public function testShouldDecodeHelloWorldWithNov27Timestamp()
     {
@@ -89,7 +89,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 3
+      * Test vector X (currently 6)
       */
     public function testShouldDecodeEightNullBytesWithZeroTimestamp()
     {
@@ -102,7 +102,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 4
+      * Test vector X (currently 7)
       */
     public function testShouldDecodeEightNullBytesWithMaxTimestamp()
     {
@@ -115,7 +115,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 5
+      * Test vector X (currently 8)
       */
     public function testShouldDecodeEightNullBytesWithNov27Timestamp()
     {
@@ -127,6 +127,9 @@ class BrancaTest extends TestCase
         $this->assertEquals(123206400, $branca->timestamp($token));
     }
 
+    /**
+      * Test vector X (currently 1)
+      */
     public function testShouldDecodeEmptyPayloadWithZeroTimestamp()
     {
         $token = "4sfD0vPFhIif8cy4nB3BQkHeJqkOkDvinI4zIhMjYX4YXZU5WIq9ycCVjGzB5";
@@ -137,17 +140,21 @@ class BrancaTest extends TestCase
         $this->assertEquals(0, $branca->timestamp($token));
     }
 
-    public function testShouldDecodeNonUtf8Characters()
+    /**
+      * Test vector X (currently 0)
+      */
+    public function testShouldDecodeNonUtf8CharactersWithNov27Timestamp()
     {
         $token = "K9u6d0zjXp8RXNUGDyXAsB9AtPo60CD3xxQ2ulL8aQoTzXbvockRff0y1eXoHm";
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $payload = $branca->decode($token);
 
         $this->assertEquals("80", bin2hex($payload));
+        $this->assertEquals(123206400, $branca->timestamp($token));
     }
 
     /**
-     * Test vector 6
+     * Test vector X (currently 9)
      * Token is otherwise valid, but it has version 0xBB.
      */
     public function testShouldThrowWithWrongVersion()
@@ -161,7 +168,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 8
+      * Test vector X (currently 10)
       */
     public function testShouldThrowWithInvalidBase62Characters()
     {
@@ -174,39 +181,25 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 9
+     * Test vector X (currently 11)
      *
-     * Key length should be 32 bytes.
+     * Token was created with version: 0xba
+     * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+     *
+     * Before base62 encoding the time was modified to: 0xbb
+     * 89mvl3S0BE0UCMIY94xxIux4eg1w5oXrhvCEXrDAjusSbO0Yk7AU6FjjTnbTWTqogLfNPJLzecHVb
      */
-    public function testShouldThrowWithInvalidKey()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
-
-        $branca = new Branca("tooshortkey");
-        $decoded = $branca->decode($token);
-    }
-
-    /**
-      * Test vector 11
-      */
-    public function testShouldThrowWithWrongKey()
+    public function testShouldThrowWithModifiedVersion()
     {
         $this->expectException(RuntimeException::class);
 
-        $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
-
-        $branca = new Branca("wrongsecretkeyyoushouldnotcommit");
+        $token = "89mvl3S0BE0UCMIY94xxIux4eg1w5oXrhvCEXrDAjusSbO0Yk7AU6FjjTnbTWTqogLfNPJLzecHVb";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $decoded = $branca->decode($token);
     }
 
     /**
-      * Test vector 13
-      */
-
-    /**
-      * Test vector 14
+      * Test vector X (currently 12)
       *
       * Token was created with nonce:
       * hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
@@ -226,7 +219,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 15
+     * Test vector X (currently 13)
      *
      * Token was created with time: hex2bin("0757fb00")
      * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
@@ -244,7 +237,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 16
+     * Test vector X (currently 14)
      *
      * Original ciphertext in token was:
      * hex2bin("d8fdbaf35dc37a98b523e6fe")
@@ -264,7 +257,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 17
+     * Test vector X (currently 15)
      *
      * Original Poly1305 tag was:
      * hex2bin("f3faf98dd385c68046fb7ed63c94995b")
@@ -280,6 +273,34 @@ class BrancaTest extends TestCase
 
         $token = "875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trk0";
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+    }
+
+    /**
+     * Test vector X (currently 16)
+     */
+    public function testShouldThrowWithWrongKey()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
+
+        $branca = new Branca("wrongsecretkeyyoushouldnotcommit");
+        $decoded = $branca->decode($token);
+    }
+
+    /**
+     * Test vector X (currently 17)
+     *
+     * Key length should be 32 bytes.
+     */
+    public function testShouldThrowWithInvalidKey()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
+
+        $branca = new Branca("tooshortkey");
         $decoded = $branca->decode($token);
     }
 
@@ -348,7 +369,6 @@ class BrancaTest extends TestCase
 
         $this->assertEquals($token, $encoded);
     }
-
 
     public function testShouldEncodeEightNullBytesWithMaxTimestamp()
     {

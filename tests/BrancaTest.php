@@ -310,6 +310,10 @@ class BrancaTest extends TestCase
      * since it is a footgun.
      */
 
+
+    /**
+     * Test vector X (currently 3)
+     */
     public function testShouldEncodeHelloWorldWithZeroTimestamp()
     {
         $token = "870S4BYxgHw0KnP3W9fgVUHEhT5g86vJ17etaC5Kh5uIraWHCI1psNQGv298ZmjPwoYbjDQ9chy2z";
@@ -325,6 +329,9 @@ class BrancaTest extends TestCase
         $this->assertEquals($token, $encoded);
     }
 
+    /**
+     * Test vector X (currently 4)
+     */
     public function testShouldEncodeHelloWorldWithMaxTimestamp()
     {
         $token = "89i7YCwu5tWAJNHUDdmIqhzOi5hVHOd4afjZcGMcVmM4enl4yeLiDyYv41eMkNmTX6IwYEFErCSqr";
@@ -340,6 +347,9 @@ class BrancaTest extends TestCase
         $this->assertEquals($token, $encoded);
     }
 
+    /**
+     * Test vector X (currently 5)
+     */
     public function testShouldEncodeHelloWorldWithNov27Timestamp()
     {
         $token = "875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT";
@@ -355,6 +365,9 @@ class BrancaTest extends TestCase
         $this->assertEquals($token, $encoded);
     }
 
+    /**
+     * Test vector X (currently 6)
+     */
     public function testShouldEncodeEightNullBytesWithZeroTimestamp()
     {
         $token = "1jIBheHbDdkCDFQmtgw4RUZeQoOJgGwTFJSpwOAk3XYpJJr52DEpILLmmwYl4tjdSbbNqcF1";
@@ -370,6 +383,9 @@ class BrancaTest extends TestCase
         $this->assertEquals($token, $encoded);
     }
 
+    /**
+     * Test vector X (currently 7)
+     */
     public function testShouldEncodeEightNullBytesWithMaxTimestamp()
     {
         $token = "1jrx6DUu5q06oxykef2e2ZMyTcDRTQot9ZnwgifUtzAphGtjsxfbxXNhQyBEOGtpbkBgvIQx";
@@ -385,6 +401,9 @@ class BrancaTest extends TestCase
         $this->assertEquals($token, $encoded);
     }
 
+    /**
+     * Test vector X (currently 8)
+     */
     public function testShouldEncodeEightNullBytesWithNov27Timestamp()
     {
         $token = "1jJDJOEjuwVb9Csz1Ypw1KBWSkr0YDpeBeJN6NzJWx1VgPLmcBhu2SbkpQ9JjZ3nfUf7Aytp";
@@ -401,7 +420,9 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 10
+      * Test vector X (currently 2)
+      *
+      * TODO: Not sure if this should exist?
       */
     public function testShouldThrowWithInvalidNonce()
     {
@@ -417,7 +438,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 19
+      * Test vector x (currently 1)
       */
     public function testShouldEncodeEmptyPayloadWithZeroTimestamp()
     {
@@ -435,7 +456,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 20
+      * Test vector x (currently 0)
       */
     public function testShouldEncodeNonUtf8Characters()
     {

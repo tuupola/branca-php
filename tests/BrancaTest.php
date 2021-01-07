@@ -51,7 +51,7 @@ class BrancaTest extends TestCase
      */
 
     /**
-      * Test vector 9
+      * Test vector 8
       */
     public function testShouldDecodeHelloWorldWithZeroTimestamp()
     {
@@ -64,7 +64,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 10
+      * Test vector 9
       */
     public function testShouldDecodeHelloWorldWithMaxTimestamp()
     {
@@ -76,7 +76,7 @@ class BrancaTest extends TestCase
         $this->assertEquals(4294967295, $branca->timestamp($token));
     }
     /**
-      * Test vector 11
+      * Test vector 10
       */
     public function testShouldDecodeHelloWorldWithNov27Timestamp()
     {
@@ -89,7 +89,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 12
+      * Test vector 11
       */
     public function testShouldDecodeEightNullBytesWithZeroTimestamp()
     {
@@ -102,7 +102,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 13
+      * Test vector 12
       */
     public function testShouldDecodeEightNullBytesWithMaxTimestamp()
     {
@@ -115,7 +115,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 14
+      * Test vector 13
       */
     public function testShouldDecodeEightNullBytesWithNov27Timestamp()
     {
@@ -128,7 +128,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 15
+      * Test vector 14
       */
     public function testShouldDecodeEmptyPayloadWithZeroTimestamp()
     {
@@ -141,7 +141,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 16
+      * Test vector 15
       */
     public function testShouldDecodeNonUtf8CharactersWithNov27Timestamp()
     {
@@ -154,7 +154,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 17
+     * Test vector 16
      * Token is otherwise valid, but it has version 0xBB.
      */
     public function testShouldThrowWithWrongVersion()
@@ -168,7 +168,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 18
+      * Test vector 17
       */
     public function testShouldThrowWithInvalidBase62Characters()
     {
@@ -181,7 +181,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 19
+     * Test vector 18
      *
      * Token was created with version: 0xba
      * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
@@ -199,7 +199,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 20
+      * Test vector 19
       *
       * Token was created with nonce:
       * hex2bin("beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef")
@@ -219,7 +219,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 21
+     * Test vector 20
      *
      * Token was created with time: hex2bin("0757fb00") ie. 123206400
      * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
@@ -237,7 +237,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 22
+     * Test vector 21
      *
      * Original ciphertext in token was:
      * hex2bin("d8fdbaf35dc37a98b523e6fe")
@@ -257,7 +257,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 23
+     * Test vector 22
      *
      * Original Poly1305 tag was:
      * hex2bin("f3faf98dd385c68046fb7ed63c94995b")
@@ -277,7 +277,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 24
+     * Test vector 23
      */
     public function testShouldThrowWithWrongKey()
     {
@@ -290,7 +290,7 @@ class BrancaTest extends TestCase
     }
 
     /**
-     * Test vector 25
+     * Test vector 24
      *
      * Key length should be 32 bytes.
      */
@@ -455,24 +455,6 @@ class BrancaTest extends TestCase
     }
 
     /**
-      * Test vector 8
-      *
-      * TODO: Not sure if this test should exist?
-      */
-    public function testShouldThrowWithInvalidNonce()
-    {
-        $this->expectException(SodiumException::class);
-
-        $nonce = hex2bin("dead");
-        $payload = "Hello world!";
-
-        $branca = new Branca("supersecretkeyyoushouldnotcommit");
-        NSA::setProperty($branca, "nonce", $nonce);
-
-        $encoded = $branca->encode($payload);
-    }
-
-    /**
      * These are PHP implementation specific tests. For example TTL check is not a
      * feature of the token, it is feature of the implementation.
      */
@@ -485,6 +467,19 @@ class BrancaTest extends TestCase
         $branca = new Branca("supersecretkeyyoushouldnotcommit");
         $token = $branca->encode("Hello world!", $timestamp);
         $decoded = $branca->decode($token, 3600);
+    }
+
+    public function testShouldThrowWithInvalidNonce()
+    {
+        $this->expectException(SodiumException::class);
+
+        $nonce = hex2bin("dead");
+        $payload = "Hello world!";
+
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        NSA::setProperty($branca, "nonce", $nonce);
+
+        $encoded = $branca->encode($payload);
     }
 
     public function testShouldThrowWhenTimestampOverflows()

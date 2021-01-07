@@ -105,6 +105,11 @@ class Branca
 
         $parts = unpack("Cversion/Ntime", $header);
 
+        /* Unpack failed, should not ever happen. */
+        if (false === $parts) {
+            throw new \RuntimeException("Cannot extract token header");
+        }
+
         /* Implementation should accept only current version. */
         if ($parts["version"] !== self::VERSION) {
             throw new \RuntimeException("Invalid token version");
@@ -144,6 +149,12 @@ class Branca
     {
         $token = (new Base62)->decode($token);
         $parts = unpack("Cversion/Ntime", $token);
+
+        /* Unpack failed, should not ever happen. */
+        if (false === $parts) {
+            throw new \RuntimeException("Cannot extract token header");
+        }
+
         return $parts["time"];
     }
 }

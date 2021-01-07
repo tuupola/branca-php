@@ -494,5 +494,5 @@ class BrancaTest extends TestCase
     //     /* Add maximum value to make timestamp overflow. */
     //     $ttl = 4294967295;
     //     $decoded = $branca->decode($token, $ttl);
-    }
+    //}
 }

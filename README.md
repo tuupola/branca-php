@@ -4,7 +4,10 @@ Authenticated and encrypted API tokens using modern crypto.
 
 [![Latest Version](https://img.shields.io/packagist/v/tuupola/branca.svg?style=flat-square)](https://packagist.org/packages/tuupola/branca)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
-[![Build Status](https://img.shields.io/travis/tuupola/branca-php/master.svg?style=flat-square)](https://travis-ci.org/tuupola/branca-php)[![Coverage](https://img.shields.io/codecov/c/github/tuupola/branca-php.svg?style=flat-square)](https://codecov.io/github/tuupola/branca-php)
+[![Build Status](https://img.shields.io/github/workflow/status/tuupola/branca-php/Tests/2.x?style=flat-square)](https://github.com/tuupola/branca-php/actions)
+[![Coverage](https://img.shields.io/codecov/c/github/tuupola/branca-php.svg?style=flat-square)](https://codecov.io/github/tuupola/branca-php)
+
+
 
 ## What?
 

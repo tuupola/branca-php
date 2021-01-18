@@ -47,6 +47,13 @@ class Branca
      */
     private $key;
 
+    /**
+     * Nonce used for unit testing only.
+     * @var string
+     */
+    private $nonce = null;
+
+
     public function __construct(string $key)
     {
         /* Apparently some PHP 7.2 versions do not have this defined. */
@@ -70,7 +77,11 @@ class Branca
 
         $version = pack("C", self::VERSION);
         $time = pack("N", $timestamp);
-        $nonce = random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
+
+        $nonce = $this->nonce;
+        if (empty($nonce)) {
+            $nonce = random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
+        }
 
         $header = $version . $time . $nonce;
 

@@ -124,7 +124,7 @@ Branca token includes a timestamp when it was created. When decoding you can opt
 ```php
 use Branca\Branca;
 
-$key = random_bytes(32);
+$key = hex2bin("73757065727365637265746b6579796f7573686f756c646e6f74636f6d6d6974");
 $branca = new Branca($key);
 
 $token = "1jJDJOEeG2FutA8g7NAOHK4Mh5RIE8jtbXd63uYbrFDSR06dtQl9o2gZYhBa36nZHXVfiGFz";

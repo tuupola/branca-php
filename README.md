@@ -38,12 +38,15 @@ address. You also must provide a 32 byte secret key. The key is used for encrypt
 ```php
 use Branca\Branca;
 
-$branca = new Branca("supersecretkeyyoushouldnotcommit");
+$key = random_bytes(32);
+$branca = new Branca($key);
+
 $payload = "tuupola@appelsiini.net";
 $token = $branca->encode($payload);
 /* hGgg0dPSseaUPZqGloWlDGb2i8hb6iamFBIQaatgYDRhEuaXyByaX0nzmyQk1WYAuSBEMWpB20Z1dENLFItwf1 */
 
-$decoded = $branca->decode($token); /* someone@example.com */
+$decoded = $branca->decode($token);
+/* tuupola@appelsiini.net */
 ```
 
 Sometimes you might prefer JSON.
@@ -51,7 +54,8 @@ Sometimes you might prefer JSON.
 ```php
 use Branca\Branca;
 
-$branca = new Branca("supersecretkeyyoushouldnotcommit");
+$key = random_bytes(32);
+$branca = new Branca($key);
 
 $payload = json_encode(["scope" => ["read", "write", "delete"]]);
 $token = $branca->encode($payload);
@@ -85,7 +89,9 @@ use MessagePack\MessagePack;
 use MessagePack\Packer;
 use MessagePack\BufferUnpacker;
 
-$branca = new Branca("supersecretkeyyoushouldnotcommit");
+$key = random_bytes(32);
+$branca = new Branca($key);
+
 $payload = (new Packer)->pack(["scope" => ["read", "write", "delete"]]);
 $token = $branca->encode($payload);
 
@@ -118,7 +124,9 @@ Branca token includes a timestamp when it was created. When decoding you can opt
 ```php
 use Branca\Branca;
 
-$branca = new Branca("supersecretkeyyoushouldnotcommit");
+$key = random_bytes(32);
+$branca = new Branca($key);
+
 $token = "1jJDJOEeG2FutA8g7NAOHK4Mh5RIE8jtbXd63uYbrFDSR06dtQl9o2gZYhBa36nZHXVfiGFz";
 
 print $branca->timestamp($token); /* 123206400 */

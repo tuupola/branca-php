@@ -3,7 +3,7 @@
 Authenticated and encrypted API tokens using modern crypto.
 
 [![Latest Version](https://img.shields.io/packagist/v/tuupola/branca.svg?style=flat-square)](https://packagist.org/packages/tuupola/branca)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Build Status](https://img.shields.io/github/workflow/status/tuupola/branca-php/Tests/2.x?style=flat-square)](https://github.com/tuupola/branca-php/actions)
 [![Coverage](https://img.shields.io/codecov/c/github/tuupola/branca-php.svg?style=flat-square)](https://codecov.io/github/tuupola/branca-php)
 
@@ -160,4 +160,4 @@ If you discover any security related issues, please email tuupola@appelsiini.net
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.txt) for more information.
+The MIT License (MIT). Please see [License File](LICENSE) for more information.

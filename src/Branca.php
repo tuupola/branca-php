@@ -48,6 +48,11 @@ class Branca
     private $key;
 
     /**
+     * @var int
+     */
+    private $timestamp = null;
+
+    /**
      * Nonce used for unit testing only.
      * @var string
      */
@@ -145,6 +150,9 @@ class Branca
             throw new \RuntimeException("Invalid token");
         }
 
+        /* Store timestamp value for the helper. */
+        $this->timestamp = $parts["time"];
+
         /* Check for expired token if TTL is set. */
         if (is_integer($ttl)) {
             $future = $parts["time"] + $ttl;
@@ -158,14 +166,10 @@ class Branca
 
     public function timestamp(string $token): int
     {
-        $token = (new Base62)->decode($token);
-        $parts = unpack("Cversion/Ntime", $token);
-
-        /* Unpack failed, should not ever happen. */
-        if (false === $parts) {
-            throw new \RuntimeException("Cannot extract token header");
+        if (null === $this->timestamp) {
+            $this->decode($token);
         }
 
-        return $parts["time"];
+        return $this->timestamp;
     }
 }

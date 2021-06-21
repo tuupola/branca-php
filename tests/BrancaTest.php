@@ -224,7 +224,7 @@ class BrancaTest extends TestCase
      * Token was created with time: hex2bin("0757fb00") ie. 123206400
      * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
      *
-     * Before base62 encoding the time was modified to: hex2bin("0057fb00")
+     * Before base62 encoding the time was modified to: hex2bin("0057fb00") ie. 5765888
      * 870g1RCk4lW1YInhaU3TP8u2hGtfol16ettLcTOSoA0JIpjCaQRW7tQeP6dQmTvFIB2s6wL5deMXr
      */
     public function testShouldThrowWithModifiedTimestamp()
@@ -480,6 +480,24 @@ class BrancaTest extends TestCase
         NSA::setProperty($branca, "nonce", $nonce);
 
         $encoded = $branca->encode($payload);
+    }
+
+    /**
+     * Timestamp helper should throw is token has been tampered.
+     *
+     * Token was created with time: hex2bin("0757fb00") ie. 123206400
+     * 875GH23U0Dr6nHFA63DhOyd9LkYudBkX8RsCTOMz5xoYAMw9sMd5QwcEqLDRnTDHPenOX7nP2trlT
+     *
+     * Before base62 encoding the time was modified to: hex2bin("0057fb00") ie. 5765888
+     * 870g1RCk4lW1YInhaU3TP8u2hGtfol16ettLcTOSoA0JIpjCaQRW7tQeP6dQmTvFIB2s6wL5deMXr
+     */
+    public function testShouldThrowWithModifiedTimestampWhenReadingTimestamp()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $token = "870g1RCk4lW1YInhaU3TP8u2hGtfol16ettLcTOSoA0JIpjCaQRW7tQeP6dQmTvFIB2s6wL5deMXr";
+        $branca = new Branca("supersecretkeyyoushouldnotcommit");
+        $timestamp = $branca->timestamp($token);
     }
 
     // public function testShouldThrowWhenTimestampOverflows()

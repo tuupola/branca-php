@@ -40,7 +40,10 @@ use Tuupola\Base62;
 
 class Branca
 {
-    const VERSION = 0xBA; /* Magic byte, BrancA. */
+     /**
+      *  Magic byte, BrancA.
+      */
+    const VERSION = 0xBA;
 
     /**
      * @var string
@@ -74,6 +77,9 @@ class Branca
         $this->key = $key;
     }
 
+    /**
+     * Create a token from payload and optional timestamp.
+     */
     public function encode(string $payload, int $timestamp = null): string
     {
         if (null === $timestamp) {
@@ -101,6 +107,9 @@ class Branca
         return (new Base62)->encode($token);
     }
 
+    /**
+     * Extract the payload from a token.
+     */
     public function decode(string $token, int $ttl = null): string
     {
         $token = (new Base62)->decode($token);

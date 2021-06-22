@@ -3,8 +3,8 @@
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
 
-## [2.2.2](https://github.com/tuupola/branca/compare/2.2.1...2.x) - unreleased
-### Fixed
+## [2.3.0](https://github.com/tuupola/branca/compare/2.2.1...2.3.0) - 2021-06-22
+### Changed
 - Token is now validated before using the `timestamp()` helper ([#19](https://github.com/tuupola/branca-php/pull/19)).
 
 

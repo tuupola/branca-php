@@ -1,6 +1,6 @@
-/vendor/
 /report/
+/vendor/
+.phplint-cache
+.phpunit.result.cache
 coverage.xml
 composer.lock
-.phplint-cache
-.env

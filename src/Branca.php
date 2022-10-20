@@ -35,7 +35,6 @@ SOFTWARE.
 
 namespace Branca;
 
-use InvalidArgumentException;
 use Tuupola\Base62;
 
 class Branca
@@ -70,7 +69,7 @@ class Branca
         }
 
         if (SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES !== strlen($key)) {
-            throw new InvalidArgumentException(
+            throw new InvalidKeyException(
                 sprintf("Key must be exactly %d bytes", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES)
             );
         }
@@ -132,12 +131,12 @@ class Branca
 
         /* Unpack failed, should not ever happen. */
         if (false === $parts) {
-            throw new \RuntimeException("Cannot extract token header");
+            throw new InvalidTokenException("Cannot extract token header");
         }
 
         /* Implementation should accept only current version. */
         if ($parts["version"] !== self::VERSION) {
-            throw new \RuntimeException("Invalid token version");
+            throw new InvalidTokenVersionException("Invalid token version");
         }
 
         try {
@@ -148,15 +147,15 @@ class Branca
                 $this->key
             );
         } catch (\Throwable $error) {
-            throw new \RuntimeException("Invalid token");
+            throw new InvalidTokenException("Invalid token");
         /** @phpstan-ignore-next-line */
         } catch (\Exception $error) {
-            throw new \RuntimeException("Invalid token");
+            throw new InvalidTokenException("Invalid token");
         }
 
         /* In some cases sodium returns false. */
         if (false === $payload) {
-            throw new \RuntimeException("Invalid token");
+            throw new InvalidTokenException("Invalid token");
         }
 
         /* Store timestamp value for the helper. */
@@ -166,7 +165,7 @@ class Branca
         if (is_integer($ttl)) {
             $future = $parts["time"] + $ttl;
             if ($future < time()) {
-                throw new \RuntimeException("Token is expired");
+                throw new ExpiredTokenException("Token is expired");
             }
         }
 
